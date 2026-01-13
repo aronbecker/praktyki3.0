@@ -1,4 +1,22 @@
 <?php
+include 'dbmanager.php';
+session_start();
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit();
+}
+else {
+    $stmt = $conn->prepare("SELECT login FROM users WHERE email = ?");
+    $stmt->bind_param("s", $_SESSION['login']);
+    $stmt->execute();
+    $stmt->bind_result($loginName);
+    if ($stmt->fetch()) {
+        $displayName = $loginName;
+    } else {
+        $displayName = $_SESSION['login'];
+    }
+    echo "Witaj, " . htmlspecialchars($displayName) . "!";
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -9,6 +27,7 @@
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
+    <input type="button" value="Wyloguj się" onclick="window.location.href='logout.php'" id="logoutBtn">
     <div class="Dheader">
     <h1 style="text-align: center;">Skoki</h1>
     </div>

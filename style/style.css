@@ -48,6 +48,18 @@ body {
     cursor: pointer;
     float: right;
 }
+#logoutBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
 #divination {
     width: 60%;
     margin-top: 20px;
