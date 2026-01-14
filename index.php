@@ -35,8 +35,9 @@ else {
     <input type="text" id="search" placeholder="Szukaj...">
     <input type="button" value="Szukaj" id="searchBtn">
     </div>
+    <input type="button" value="Panel administracyjny" id="adminBtn" onclick="window.location.href='admin.php'">
+    <div class="companyList" id="companyList">
     
-    <div class="Dmenu">
     </div>
 </body>
 </html>

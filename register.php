@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h2>Rejestracja</h2>
-    <div>
+    <div class="div">
     <form method="post" action="">
         <label for="login">Login:</label><br>
         <input type="text" id="login" name="login" required><br>
