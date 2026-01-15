@@ -25,72 +25,75 @@
 <body>
     <h1>Panel administracyjny</h1>
     <input type="button" value="Powrót do strony głównej" onclick="window.location.href='index.php'" style="margin-bottom: 20px; float: left;">
-    <div class="div" style="margin-bottom: 20px; width: 35%;">
-        <p>Wpisz ID firmy jeśli chcesz edytować lub usunąć firmę</p>
-        <p>Zostaw wszystkie pozostałe pola puste jeśli chcesz usunąć firmę</p>
-    </div>
-    
+    <br><br><br><br>
     <div class="div" id='form' style="float: left; margin-right: 50px; padding">
-    <h2>Dodaj/Edytuj Firmę</h2>
-    <form method="POST" action="addEdit_company.php" style="float: left; margin-left: 20px;">
-        <label for="id">ID:</label>
-        <input type="number" name="id" id="id" placeholder="ID"><br>
-        <label for="company_name">Nazwa Firmy:</label>
-        <input type="text" name="nazwa" id="company_name" placeholder="Nazwa Firmy" ><br>
-        <label for="street">Ulica:</label>
-        <input type="text" name="ulica" id="street" placeholder="Ulica" ><br>
-        <label for="postal_code">Kod Pocztowy:</label>
-        <input type="text" name="kod_pocztowy" id="postal_code" placeholder="Kod Pocztowy" maxlength="6" ><br>
-        <label for="NIP">NIP:</label>
-        <input type="number" name="NIP" id="NIP" placeholder="NIP" maxlength="9" ><br>
-        <label for="REGON">REGON:</label>
-        <input type="number" name="REGON" id="REGON" placeholder="REGON" maxlength="14" ><br>
-        <label for="phone">Numer Telefonu:</label>
-        <input type="number" name="nr_telefonu" id="phone" placeholder="Numer Telefonu" maxlength="11" ><br>
-        <label for="email">Email:</label>
-        <input type="text" name="email" id="email" placeholder="Email" ><br>
-        <label for="confirm">Potwierdź</label>
-        <input type="checkbox" name="" id="confirm" required><br>
+    <h2>Dodaj Firmę</h2>
+    <form method="POST" action="add_company.php" style="float: left; margin-left: 20px;">
+        <label for="NIP">NIP:</label><br>
+        <input type="text" id="NIP" name="NIP" ><br>
+        <label for="REGON">REGON:</label><br>
+        <input type="text" id="REGON" name="REGON" ><br>
+        <label for="nazwa">Nazwa:</label><br>
+        <input type="text" id="nazwa" name="nazwa" required><br>
+        <label for="imie">Imię:</label>
+        <input type="text" id="imie" name="imie" ><br>
+        <label for="nazwisko">Nazwisko:</label>
+        <input type="text" id="nazwisko" name="nazwisko" ><br>
+        <label for="nr_telefonu">Numer Telefonu:</label><br>
+        <input type="text" id="nr_telefonu" name="nr_telefonu" ><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" ><br>
+        <label for="adres_www">Adres WWW:</label><br>
+        <input type="text" id="adres_www" name="adres_www"><br>
+        <label for="kod_pocztowy">Kod Pocztowy:</label><br>
+        <input type="text" id="kod_pocztowy" name="kod_pocztowy" ><br>
+        <label for="powiat">Powiat:</label><br>
+        <input type="text" id="powiat" name="powiat" ><br>
+        <label for="gmina">Gmina:</label><br>
+        <input type="text" id="gmina" name="gmina" ><br>
+        <label for="miejscowosc">Miejscowość:</label><br>
+        <input type="text" id="miejscowosc" name="miejscowosc" ><br>
+        <label for="ulica">Ulica:</label><br>
+        <input type="text" id="ulica" name="ulica" ><br>
+        <label for="numer_budynku">Numer Budynku:</label><br>
+        <input type="text" id="numer_budynku" name="numer_budynku" ><br>
+        <label for="numer_lokalu">Numer Lokalu:</label><br>
+        <input type="text" id="numer_lokalu" name="numer_lokalu"><br><br>
         <input type="submit" value="Zatwierdź">
     </form>
     </div>
 
-    <div class="div" id="companyDisplay" style="width: 75%; float: right;">
+    <div class="div" id="companyDisplay" style="width: 75%; float: right;overflow-y: scroll;height: 600px;overflow-x: scroll;">
     <h2>Lista Firm</h2>
     <?php
-        $stmt = $conn->prepare("SELECT id, nazwa, ulica, kod_pocztowy, NIP, REGON, nr_telefonu, email FROM firmy");
+        $stmt = $conn->prepare("SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company");
         $stmt->execute();
         $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            echo "<table border='1'>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nazwa</th>
-                        <th>Ulica</th>
-                        <th>Kod Pocztowy</th>
-                        <th>NIP</th>
-                        <th>REGON</th>
-                        <th>Numer Telefonu</th>
-                        <th>Email</th>
-                    </tr>";
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>" . htmlspecialchars($row['id']) . "</td>
-                        <td>" . htmlspecialchars($row['nazwa']) . "</td>
-                        <td>" . htmlspecialchars($row['ulica']) . "</td>
-                        <td>" . htmlspecialchars($row['kod_pocztowy']) . "</td>
-                        <td>" . htmlspecialchars($row['NIP']) . "</td>
-                        <td>" . htmlspecialchars($row['REGON']) . "</td>
-                        <td>" . htmlspecialchars($row['nr_telefonu']) . "</td>
-                        <td>" . htmlspecialchars($row['email']) . "</td>
-                    </tr>";
-            }
-            echo "</table>";
-        } else {
-            echo "Brak firm w bazie danych.";
+        echo "<table border='1'>";
+        echo "<tr><th>LP</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th></tr>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['lp']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['regon']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['nazwapodmiotu']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['nazwisko']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['imie']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['telefon']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['adreswww']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['kodpocztowy']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['powiat']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['gmina']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['miejscowosc']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['ulica']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['nrbudynku']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['nrlokalu']) . "</td>";
+            echo "<td><a href='edit_company.php?lp=" . urlencode($row['lp']) . "'>Edytuj</a></td>";
+            echo "<td><a href='delete_company.php?lp=" . urlencode($row['lp']) . "' onclick=\"return confirm('Czy na pewno chcesz usunąć tę firmę?');\">Usuń</a></td>";
+            echo "</tr>";
         }
-
+        echo "</table>";
         $stmt->close();
         $conn->close();
     ?>

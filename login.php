@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h2>Logowanie</h2>
     <form method="POST" action="login.php">
-        <div class="div">
+        <div style="width: 30%;">
         <label for="login">Login lub email:</label><br>
         <input type="text" id="login" name="login" required><br>
         <label for="pass">Hasło:</label><br>
