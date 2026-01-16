@@ -62,11 +62,27 @@
         <input type="submit" value="Zatwierdź">
     </form>
     </div>
-
+    <div style='width: 75%; float: right; margin-bottom: 20px;'>
+        <form method="GET" action="">
+        <input type="text" id="search" name="search" placeholder="Szukaj..." style='width: 70%; float: left;'>
+        <input type="submit" value="Szukaj" id="searchBtn" style="float: right;">
+        </form>
+    </div>
     <div class="div" id="companyDisplay" style="width: 75%; float: right;overflow-y: scroll;height: 600px;overflow-x: scroll;">
     <h2>Lista Firm</h2>
     <?php
-        $stmt = $conn->prepare("SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company");
+        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+        $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company";
+        
+        if (!empty($searchQuery)) {
+            $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
+            $stmt = $conn->prepare($sql);
+            $likeQuery = "%" . $searchQuery . "%";
+            $stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
+        } else {
+            $stmt = $conn->prepare($sql);
+        }
+        
         $stmt->execute();
         $result = $stmt->get_result();
         echo "<table border='1'>";

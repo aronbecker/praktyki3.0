@@ -15,7 +15,7 @@ else {
     } else {
         $displayName = $_SESSION['login'];
     }
-    echo "Witaj, " . htmlspecialchars($displayName) . "!";
+    echo "<div style='padding: 10px; border: 2px solid black; background-color: white; float: left; width: 10%;'>" . "Witaj, " . htmlspecialchars($displayName) . "!" . "</div>";
     $stmt->close();
 }
 ?>
@@ -25,7 +25,7 @@ else {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/styl.css">
 </head>
 <body>
     <input type="button" value="Wyloguj się" onclick="window.location.href='logout.php'" id="logoutBtn">
@@ -33,13 +33,26 @@ else {
     <h1 style="text-align: center;">Skoki</h1>
     </div>
     <div id="divination">
-    <input type="text" id="search" placeholder="Szukaj...">
-    <input type="button" value="Szukaj" id="searchBtn">
+    <form method="GET" action="">
+        <input type="text" id="search" name="search" placeholder="Szukaj...">
+        <input type="submit" value="Szukaj" id="searchBtn">
+    </form>
     </div>
     <input type="button" value="Panel administracyjny" id="adminBtn" onclick="window.location.href='admin.php'">
     <div class="companyList" id="companyList">
     <?php
-        $stmt = $conn->prepare("SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company");
+        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+        $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company";
+        
+        if (!empty($searchQuery)) {
+            $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
+            $stmt = $conn->prepare($sql);
+            $likeQuery = "%" . $searchQuery . "%";
+            $stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
+        } else {
+            $stmt = $conn->prepare($sql);
+        }
+        
         $stmt->execute();
         $result = $stmt->get_result();
         echo "<table border='1'>";
@@ -68,6 +81,7 @@ else {
         $stmt->close();
         $conn->close();
     ?>
+    </div>
     </div>
 </body>
 </html>
