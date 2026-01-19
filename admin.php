@@ -25,6 +25,7 @@
 <body>
     <h1>Panel administracyjny</h1>
     <input type="button" value="Powrót do strony głównej" onclick="window.location.href='index.php'" style="margin-bottom: 20px; float: left;">
+    <input type="button" value="Zarządzaj użytkownikami" onclick="window.location.href='manage_users.php'" style="margin-bottom: 20px; float: right;">
     <br><br><br><br>
     <div class="div" id='form' style="float: left; margin-right: 50px; padding">
     <h2>Dodaj Firmę</h2>
@@ -72,7 +73,7 @@
     <h2>Lista Firm</h2>
     <?php
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-        $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company";
+        $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy";
         
         if (!empty($searchQuery)) {
             $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";

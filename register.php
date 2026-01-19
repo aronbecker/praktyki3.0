@@ -4,6 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST['login'];
     $pass = $_POST['pass'];
     $email = $_POST['email'];
+    $adminSts = $_POST['admin'] ?? 0;
 
     $checkLoginStmt = $conn->prepare("SELECT * FROM users WHERE login = ?");
     $checkLoginStmt->bind_param("s", $login);
@@ -24,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("INSERT INTO users (login, pass, email) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $login, $pass, $email);
             if ($stmt->execute()) {
-                echo "Rejestracja zakończona sukcesem. <a href='login.php'>Zaloguj się</a>";
+                echo "Rejestracja zakończona sukcesem.<input type='button' value='Powrót' onclick=\"window.history.back()\">";
             } else {
                 echo "Błąd podczas rejestracji.";
         }
@@ -55,6 +56,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" id="pass" name="pass" required><br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br>
+        <?php
+        session_start();
+        $adminStmt = $conn->prepare("SELECT admin FROM users WHERE email = ?");
+            $adminStmt->bind_param("s", $_SESSION['login']);
+            $adminStmt->execute();
+            $adminStmt->bind_result($isAdmin);
+            $adminStmt->fetch();
+            $adminStmt->close();
+            if ($isAdmin == 1) {
+                echo '<label for="admin">Administrator:</label>';
+                echo '<input type="checkbox" id="admin" name="admin" value="1"><br>';
+            }
+        ?>
         <input type="submit" value="Zarejestruj się">
     </form>
     </div>

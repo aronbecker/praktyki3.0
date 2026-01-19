@@ -2,7 +2,7 @@
 include 'dbmanager.php';
 if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
     $lp = $_GET['lp'];
-    $stmt = $conn->prepare("SELECT nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company WHERE lp = ?");
+    $stmt = $conn->prepare("SELECT nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy WHERE lp = ?");
     $stmt->bind_param("i", $lp);
     $stmt->execute();
     $stmt->bind_result($nip, $regon, $nazwapodmiotu, $nazwisko, $imie, $telefon, $email, $adreswww, $kodpocztowy, $powiat, $gmina, $miejscowosc, $ulica, $nrbudynku, $nrlokalu);
@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
     $ulica = $_POST['ulica'];
     $nrbudynku = $_POST['nrbudynku'];
     $nrlokalu = $_POST['nrlokalu'];
-    $stmt = $conn->prepare("UPDATE company SET nip = ?, regon = ?, nazwapodmiotu = ?, nazwisko = ?, imie = ?, telefon = ?, email = ?, adreswww = ?, kodpocztowy = ?, powiat = ?, gmina = ?, miejscowosc = ?, ulica = ?, nrbudynku = ?, nrlokalu = ? WHERE lp = ?");
+    $stmt = $conn->prepare("UPDATE firmy SET nip = ?, regon = ?, nazwapodmiotu = ?, nazwisko = ?, imie = ?, telefon = ?, email = ?, adreswww = ?, kodpocztowy = ?, powiat = ?, gmina = ?, miejscowosc = ?, ulica = ?, nrbudynku = ?, nrlokalu = ? WHERE lp = ?");
     $stmt->bind_param("sssssssssssssssi", $nip, $regon, $nazwapodmiotu, $nazwisko, $imie, $telefon, $email, $adreswww, $kodpocztowy, $powiat, $gmina, $miejscowosc, $ulica, $nrbudynku, $nrlokalu, $lp);
     if ($stmt->execute()) {
         echo "Dane firmy zostały zaktualizowane pomyślnie.";
@@ -68,14 +68,14 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
         <body>
             
             <h1>Edytuj Firmę</h1><div style="width: 30%; margin: auto;">
-            <form method="POST" action="edit_company.php">
+            <form method="POST" action="edit_firmy.php">
                 <input type="hidden" name="lp" value="<?php echo htmlspecialchars($lp); ?>">
                 <label for="NIP">NIP:</label><br>
                 <input type="text" id="NIP" name="NIP" value="<?php echo htmlspecialchars($nip); ?>"><br>
                 <label for="REGON">REGON:</label><br>
                 <input type="text" id="REGON" name="REGON" value="<?php echo htmlspecialchars($regon); ?>"><br>
                 <label for="nazwa">Nazwa:</label><br>
-                <input type="text" id="nazwa" name="nazwa" value="<?php echo htmlspecialchars($nazwapodmiotu); ?>" required><br>
+                <input type="text" id="nazwapodmiotu" name="nazwapodmiotu" value="<?php echo htmlspecialchars($nazwapodmiotu); ?>" required><br>
                 <label for="imie">Imię:</label>
                 <input type="text" id="imie" name="imie" value="<?php echo htmlspecialchars($imie); ?>"><br>
                 <label for="nazwisko">Nazwisko:</label>

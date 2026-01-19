@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2026 at 12:08 PM
+-- Generation Time: Jan 19, 2026 at 12:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `company`
+-- Table structure for table `firmy`
 --
 
-CREATE TABLE `company` (
+CREATE TABLE `firmy` (
   `Lp` int(255) NOT NULL,
   `Nip` varchar(10) DEFAULT NULL,
   `Regon` varchar(9) DEFAULT NULL,
@@ -47,10 +47,10 @@ CREATE TABLE `company` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `company`
+-- Dumping data for table `firmy`
 --
 
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (1, '7771303512', '639714207', '\"\"\" COMPLEX\"\" NAJEWSKI MICHAŁ\"', 'NAJEWSKI', 'MICHAŁ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. MALINOWA', '21', ''),
 (2, '5621550550', '092483389', '\"\"\" Łu-Ro\"\" Słomiński Łukasz\"', 'SŁOMIŃSKI', 'ŁUKASZ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Łopuchowo', '', '11', '2'),
 (3, '7771741270', '', '\"\"\" PRO- DREW\"\" IRENEUSZ PERS\"', 'PERS', 'IRENEUSZ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL.KOCHANOWSKIEGO 13', '', ''),
@@ -300,7 +300,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (247, '7773135473', '362262739', 'ANCAN SOLUTIONS KAMIL ANCAN', 'ANCAN', 'KAMIL', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Rogozińska', '39', ''),
 (248, '', '', 'ANDERS EWA', 'ANDERS', 'EWA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Przebędowo', '', '', ''),
 (249, '7772262809', '639621799', 'ANDERS PRZEMYSŁAW', 'ANDERS', 'PRZEMYSŁAW', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Przebędowo', '', '24', '4');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (250, '7772579558', '520926605', 'AN-DON Anna Donder', 'Donder', 'Anna', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Przebędowo', 'PRZEBĘDOWO', '80', '1'),
 (251, '9720757753', '302675684', 'ANDRZEJ BEDNARCZYK', 'BEDNARCZYK', 'ANDRZEJ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Różana', '12', ''),
 (252, '7771010804', '630126880', '\"Andrzej Dukat \"\"DUKAT\"\"\"', 'DUKAT', 'ANDRZEJ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Źródlana', '31', ''),
@@ -560,7 +560,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (506, '7772839568', '387216007', 'Centrum EdukAACji Paulina Rutkowska', 'Rutkowska', 'Paulina', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Białężyn', '', '2C', ''),
 (507, '7772143128', '302084859', 'CENTRUM FINANSÓW MAVERICK MAREK PRZYBYŁOWSKI', 'Przybyłowski', 'Marek', '', 'c.f.u.maverick@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Długa', '29', '10'),
 (508, '7772727326', '300917054', 'CENTRUM JĘZYKA FRANCUSKIEGO GREVISSE MAGDALENA KRANKIEWICZ NIP 777-272-73-26', 'KRANKIEWICZ', 'MAGDALENA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL.KRĘTA 45C/6', '', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (509, '7772942071', '300432517', 'CENTRUM JĘZYKOWE C.J. RYNCEWICZ ANNA', 'RYNCEWICZ', 'ANNA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. PLAC KASZTANOWY 5', '', ''),
 (510, '7881691797', '302589737', 'Centrum Ogrodnicze Grażyna Gierszewska', 'Gierszewska', 'Grażyna', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Rogozińska', '31', ''),
 (511, '8762395981', '368230717', 'CENTRUM ROZWOJU EMOCJA PAULINA PLAMOWSKA', 'PLAMOWSKA', 'PAULINA', '531177275', 'aksworob@interia.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Kręta', '7', ''),
@@ -817,7 +817,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (762, '7772662667', '301518422', 'FIRMA HANDLOWA MAGDALENA KUJAWSKA', 'KUJAWSKA', 'MAGDALENA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Podkomorzego', '12', ''),
 (763, '7771679513', '639790214', 'FIRMA HANDLOWA R.B. BROMBEREK ROMAN', 'BROMBEREK', 'ROMAN', '', 'roman.bromberek@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Kalinowa', '4', ''),
 (764, '9251924120', '387688545', 'FIRMA HANDLOWA SYLWIA DOLATA', 'DOLATA', 'SYLWIA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Tarninowa', '1', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (765, '7661906965', '300689009', 'FIRMA HANDLOWO - USŁUGOWA PIOTR MATCZYŃSKI', 'MATCZYŃSKI', 'PIOTR', '', 'malutki84@yahoo.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Nowy Rynek', '17', '13'),
 (766, '7771140317', '302104651', '\"FIRMA HANDLOWO PRODUKCYJNA \"\"ADO\"\" DOROTA KRAUSE\"', 'KRAUSE', 'DOROTA', '', 'dorotka.57@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Worowo', '', '2', ''),
 (767, '7771582050', '301474512', 'FIRMA HANDLOWO USŁUGOWA ADAM WARZOCHA', 'WARZOCHA', 'ADAM', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. NOWA 6', '', ''),
@@ -1065,7 +1065,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (1009, '7781202540', '631229702', 'INDYWIDUALNA PRAKTYKA LEKARSKA PAWEŁ KASPRZAK', 'KASPRZAK', 'PAWEŁ', '', 'GOLDENHEKTOR@GAZETA.PL', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Modrzewiowa', '4', '9'),
 (1010, '9720907589', '301086537', 'Indywidualna Praktyka Lekarska w miejscu wezwania Aleksander Waśniowski', 'WAŚNIOWSKI', 'ALEKSANDER', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. KRĘTA 45A/7', '', ''),
 (1011, '7773024414', '300887554', 'INDYWIDUALNA PRAKTYKA LEKARSKA W MIEJSCU WEZWANIA NIP 777-30-24-414 MOTOWIDŁO KATARZYNA', 'MOTOWIDŁO', 'KATARZYNA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. POLNA 1', '', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (1012, '7771451365', '631220411', 'INDYWIDUALNA PRAKTYKA PIELEGNIARSKA SZWEDA ALINA', 'SZWEDA', 'ALINA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. KRĘTA 58', '', ''),
 (1013, '7771680812', '301804441', 'INDYWIDUALNA PRAKTYKA PIELĘGNIARSKA AGNIESZKA ANDRZEJEWSKA', 'Andrzejewska', 'Agnieszka', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Kochanowskiego', '16', '1'),
 (1014, '7772309416', '301551572', 'Indywidualna praktyka pielęgniarska BEATA STASIAK', 'STASIAK', 'BEATA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. PRZESMYK', '1', '2'),
@@ -1323,7 +1323,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (1266, '7773364417', '386884913', 'Kwiat Paproci Katarzyna Biesek', 'Biesek', 'Katarzyna', '508416476', 'katarzyna.biesek@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Nowy Rynek', '11', ''),
 (1267, '7771183597', '526304543', 'L.bit Leszek Beszterda', 'Beszterda', 'Leszek', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Modrzewiowa', '4', '14'),
 (1268, '7771980595', '302730213', 'LADORSKI- BUDOPROJEKT Anna Ladorska', 'LADORSKA', 'ANNA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'pl. Powstańców Wielkopolskich', '4', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (1269, '7771980603', '301162385', 'LADORSKI-BUDOPROJEKT Kazimierz Ladorski', 'LADORSKI', 'KAZIMIERZ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'pl. Powstańców Wielkopolskich', '4', ''),
 (1270, '7772482528', '302501843', 'LEAN INNOWATOR MICHAŁ KALINOWSKI', 'KALINOWSKI', 'MICHAŁ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Boduszewo', 'ul. Gwiaździsta', '6', ''),
 (1271, '7771011169', '630295246', 'LECH NAWROCKI', 'NAWROCKI', 'LECH', '', 'nawrocki-lech@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Kręta', '21', '13'),
@@ -1589,7 +1589,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (1531, '7771684112', '630980812', 'MOLIŃSKI BOGUSŁAW', 'MOLIŃSKI', 'BOGUSŁAW', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL.ŁĄKOWA 40', '', ''),
 (1532, '6080053236', '302127304', 'MONIKA ORZECHOWSKA - AKCESORIA DLA DZIECI I NIEMOWLĄT', 'Orzechowska', 'Monika', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Mściszewo', '', '29J', ''),
 (1533, '7772269237', '384721087', 'Monika Smólska', 'Smólska', 'Monika', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Pławno', '', '10', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (1534, '7772629167', '363014943', 'Monika Wtorkowska', 'Wtorkowska', 'Monika', '', 'monika.wtorkowska@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Jaśminowa', '7', ''),
 (1535, '7771181629', '301800331', 'MONTOWNIA PIZZY JOLANTA ADAMCZAK', 'ADAMCZAK', 'JOLANTA', '537 069 - 865', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Poznańska', '2', ''),
 (1536, '', '', 'MOROZ WALDEMAR', 'MOROZ', 'WALDEMAR', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Mściszewo', '', '', ''),
@@ -1850,7 +1850,7 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (1791, '7772333975', '634351310', 'Posadzkarstwo i Cyklinowanie Edyta Gruszczyńska', 'Gruszczyńska', 'Edyta', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Mściszewo', '', '24B', ''),
 (1792, '7773303781', '369148231', 'Pośrednictwo Ubezpieczeniowe Adrianna Świstara', 'Świstara', 'Adrianna', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Podgórna', '7', ''),
 (1793, '7650000853', '631118842', 'POŚREDNICTWO UBEZPIECZENIOWE JAROSŁAW PRZYNOGA', 'PRZYNOGA', 'JAROSŁAW', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'DWORCOWA', '2', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (1794, '7771843059', '630854533', 'POŚREDNICTWO UBEZPIECZENIOWE KAROL SCHULZ', 'SCHULZ', 'KAROL', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. PODGÓRNA', '7', ''),
 (1795, '7651286679', '360756609', 'Pośrednictwo Ubezpieczeniowe Katarzyna Przynoga', 'Przynoga', 'Katarzyna', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Dworcowa', '2', '2'),
 (1796, '7772577217', '634170872', 'POŚREDNICTWO UBEZPIECZENIOWE KURANTOWICZ ŁUKASZ', 'KURANTOWICZ', 'ŁUKASZ', '', 'TFW1@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Wojnówko', 'Łąkowa', '16', ''),
@@ -2088,9 +2088,9 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (2028, '7773019689', '365378431', 'RMBUD Remigiusz Marszał', 'Marszał', 'Remigiusz', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Bonawentury Graszyńskiego', '7', '19'),
 (2029, '7771088858', '300755798', 'ROB-BUD Robert Sądej', 'Sądej', 'Robert', '', 'robert-sadej@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Długa Goślina', '', '4D', ''),
 (2030, '7771184013', '630446998', 'Robert Augustyniak', 'Augustyniak', 'Robert', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Smolna', '11', '62'),
-(2031, '7773211688', '529303863', 'Robert Kamiński', 'Kamiński', 'Robert', '', '', '', '62-097', 'poznański', 'Murowana Goślina', 'Długa Goślina', '', '21A', '6');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
-(2032, '9720213728', '634591148', 'Robert Pietek', 'Pietek', 'Robert', '', 'ropietek@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Kręta', '3d', '20'),
+(2031, '7773211688', '529303863', 'Robert Kamiński', 'Kamiński', 'Robert', '', '', '', '62-097', 'poznański', 'Murowana Goślina', 'Długa Goślina', '', '21A', '6'),
+(2032, '9720213728', '634591148', 'Robert Pietek', 'Pietek', 'Robert', '', 'ropietek@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Kręta', '3d', '20');
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (2033, '7771544003', '301533806', 'ROBERT RYCHLEWSKI', 'RYCHLEWSKI', 'ROBERT', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Mściszewo', '', '29K', ''),
 (2034, '7771083789', '931134524', 'ROBI ROBERT WOŹNIAK', 'WOŹNIAK', 'ROBERT', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Chabrowa', '3', '2'),
 (2035, '7771783825', '632085180', 'ROBOTY OGÓLNOBUDOWLANE JACEK POL', 'POL', 'JACEK', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Słoneczna', '2A', ''),
@@ -2342,9 +2342,9 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (2281, '7781334968', '300461163', 'TONI Tomasz Nijakowski', 'Nijakowski', 'Tomasz', '', 'tomek.nijakowski@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Widok', '5', ''),
 (2282, '7772734639', '302648569', 'TOPSERVICE Paweł Topolski', 'Topolski', 'Paweł', '792 950 - 401', 'biuro@topservice-24.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Gnieźnieńska', '50', ''),
 (2283, '7773371469', '388405242', 'TopStrona Wojciech Wróblewski', 'WRÓBLEWSKI', 'WOJCIECH', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Jagienki', '8', '2'),
-(2284, '7822073164', '639696320', 'TOTAL TOMASZ pawlak', 'PAWLAK', 'TOMASZ', '0048602633803', 'agencjajezykowatotal@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Leśna', '3', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
-(2285, '9720825526', '301367153', 'TOWARZYSTWO FINANSOWE WIELKOPOLSKA 1 PAULINA MULLER', 'MULLER', 'PAULINA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Wojnówko', 'ul. Łąkowa', '16', ''),
+(2284, '7822073164', '639696320', 'TOTAL TOMASZ pawlak', 'PAWLAK', 'TOMASZ', '0048602633803', 'agencjajezykowatotal@gmail.com', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Leśna', '3', ''),
+(2285, '9720825526', '301367153', 'TOWARZYSTWO FINANSOWE WIELKOPOLSKA 1 PAULINA MULLER', 'MULLER', 'PAULINA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Wojnówko', 'ul. Łąkowa', '16', '');
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (2286, '7772508529', '381291232', 'Trampolina Pracownia Rozwoju Sensorycznego Anna Piotr', 'Piotr', 'Anna', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Długa Goślina', '', '61A', ''),
 (2287, '7773047869', '302070060', 'TRANSAR Ariel Rakowicz', 'Rakowicz', 'Ariel', '782 854 - 831', 'raczek53@op.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Nowy Rynek', '14', '11'),
 (2288, '7772021632', '630321191', 'TRANSPORT BAGAŻOWY. USŁUGI TRANSPORTOWO-DROGOWE DRYJAŃSKA ELŻBIETA', 'DRYJAŃSKA', 'ELŻBIETA', '507003230', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. SMOLNA', '5', '29'),
@@ -2594,9 +2594,9 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (2532, '7771008977', '632053547', 'ZAKŁAD INSTALACYJNY PIOTR JAROSZ', 'JAROSZ', 'PIOTR', '602443093', 'piotr.jaro60@op.pL', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Przesmyk', '14', '20'),
 (2533, '7771005039', '630117444', 'ZAKŁAD INSTALACYJNY wod.kan.gaz c.o.JANKOWSKI ANDRZEJ', 'JANKOWSKI', 'ANDRZEJ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. KRĘTA', '21', '15'),
 (2534, '7771392970', '630155730', 'Zakład Instalacyjny wod-kan co. gaz Chruścicki Zdzisław', 'Chruścicki', 'Zdzisław', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Nowa', '21', ''),
-(2535, '7771686536', '630991320', 'ZAKŁAD INSTALACYJNY WOD-KAN-CO-GAZ KRZYSZTOF WACHOWIAK', 'WACHOWIAK', 'KRZYSZTOF', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Mostowa', '20', '');
-INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
-(2536, '7771686536', '630991320', 'Zakład Instalacyjny WOD-KAN-CO-GAZ Krzysztof Wachowiak', 'Wachowiak', 'Krzysztof', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Mostowa', '20', ''),
+(2535, '7771686536', '630991320', 'ZAKŁAD INSTALACYJNY WOD-KAN-CO-GAZ KRZYSZTOF WACHOWIAK', 'WACHOWIAK', 'KRZYSZTOF', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Mostowa', '20', ''),
+(2536, '7771686536', '630991320', 'Zakład Instalacyjny WOD-KAN-CO-GAZ Krzysztof Wachowiak', 'Wachowiak', 'Krzysztof', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Mostowa', '20', '');
+INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, `Telefon`, `Email`, `AdresWWW`, `KodPocztowy`, `Powiat`, `Gmina`, `Miejscowosc`, `Ulica`, `NrBudynku`, `NrLokalu`) VALUES
 (2537, '7771775553', '524019525', 'ZAKŁAD KAMIENIARSKI OLSZEWSKI Marianna Olszewska', 'Olszewska', 'Marianna', '662 279 - 158', 'biuro@olszewski-nagrobki.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Lipowa', '2', ''),
 (2538, '7780107288', '632465646', 'Zakład Kamieniarski Olszewski Tadeusz', 'OLSZEWSKI', 'TADEUSZ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Lipowa', '2', ''),
 (2539, '7772807663', '301509736', 'ZAKŁAD KONSTRUKCYJNO BUDOWLANY WINIECKI KAJETAN', 'WINIECKI', 'KAJETAN', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Raduszyn', '', '1A', '8'),
@@ -2710,44 +2710,19 @@ INSERT INTO `company` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`
 (2647, '7771559944', '634292233', 'ZYSK EWA KRYŚ', 'KRYŚ', 'EWA', '', 'ewakry1@op.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'ul. Przesmyk', '14', '14'),
 (2648, '7772749575', '360732840', 'ZYSK Rafał Kryś', 'Kryś', 'Rafał', '', 'rafal18.04@wp.pl', '', '62-095', 'poznański', 'Murowana Goślina', 'Przebędowo', '', '17', '6'),
 (2649, '7771161963', '300602534', 'ŻUCZEK KOZIELEC URSZULA', 'KOZIELEC', 'URSZULA', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Rakownia', 'ul. Goślińska', '24', ''),
-(2650, '', '', 'ŻUROWSKI GRZEGORZ', 'ŻUROWSKI', 'GRZEGORZ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. OKRĘŻNA 11', '', '');
+(2650, '', '', 'ŻUROWSKI GRZEGORZ', 'ŻUROWSKI', 'GRZEGORZ', '', '', '', '62-095', 'poznański', 'Murowana Goślina', 'Murowana Goślina', 'UL. OKRĘŻNA 11', '', ''),
+(5333, '2', '1', 'Młyncarek Kosiarki', 'młyncarek', 'czarek', NULL, 'czarek.mlyncarek@kosiarka.biznes.pl', 'www', '12', 'skoki', 'skoki', 'skoki', 'skocka', '2', '3');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `firkat`
+-- Table structure for table `firmy_kategorie`
 --
 
-CREATE TABLE `firkat` (
-  `id` int(11) NOT NULL,
-  `id_firmy` int(11) NOT NULL,
-  `id_kategorii` int(11) NOT NULL
+CREATE TABLE `firmy_kategorie` (
+  `firma_lp` int(11) NOT NULL,
+  `kategoria_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `firmy`
---
-
-CREATE TABLE `firmy` (
-  `id` int(11) NOT NULL,
-  `nazwa` varchar(100) NOT NULL,
-  `ulica` varchar(100) NOT NULL,
-  `kod_pocztowy` varchar(6) NOT NULL,
-  `NIP` int(9) NOT NULL,
-  `REGON` int(14) NOT NULL,
-  `nr_telefonu` varchar(12) NOT NULL,
-  `email` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
-
---
--- Dumping data for table `firmy`
---
-
-INSERT INTO `firmy` (`id`, `nazwa`, `ulica`, `kod_pocztowy`, `NIP`, `REGON`, `nr_telefonu`, `email`) VALUES
-(1, 'Młyncarek Kosiarki', 'Skocka', '1', 2, 3, '4', 'czarek.mlyncarek@kosiarka.biznes.pl'),
-(2, 'podróbkiPL', 'skrajna', '666666', 999999999, 2147483647, '99999999999', 'niepiszdomnie@tutaj.com');
 
 -- --------------------------------------------------------
 
@@ -2757,7 +2732,7 @@ INSERT INTO `firmy` (`id`, `nazwa`, `ulica`, `kod_pocztowy`, `NIP`, `REGON`, `nr
 
 CREATE TABLE `kategorie` (
   `id` int(11) NOT NULL,
-  `nazwa` int(100) NOT NULL,
+  `nazwa` varchar(100) NOT NULL,
   `id_nad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
@@ -2769,12 +2744,12 @@ CREATE TABLE `kategorie` (
 
 CREATE TABLE `komentarze` (
   `id` int(11) NOT NULL,
-  `tresc` varchar(511) NOT NULL,
-  `autor` varchar(100) NOT NULL,
-  `data_utworzenia` datetime NOT NULL,
-  `data_mod` datetime NOT NULL,
+  `tresc` text NOT NULL,
+  `autor` varchar(255) DEFAULT NULL,
+  `data_utworzenia` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_mod` timestamp NULL DEFAULT NULL,
   `user_id` int(11) NOT NULL,
-  `id_firmy` int(11) NOT NULL
+  `firma_lp` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 -- --------------------------------------------------------
@@ -2787,38 +2762,34 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(100) NOT NULL,
   `pass` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL
+  `email` varchar(255) NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `pass`, `email`) VALUES
-(1, 'admin', 'admin', 'admin'),
-(2, 'Jan', 'haslo', 'jan@kowalski.com');
+INSERT INTO `users` (`id`, `login`, `pass`, `email`, `admin`) VALUES
+(1, 'admin', 'admin', 'admin', 1),
+(2, 'Jan', 'haslo', 'jan@kowalski.com', 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `company`
---
-ALTER TABLE `company`
-  ADD UNIQUE KEY `lp` (`Lp`);
-
---
--- Indexes for table `firkat`
---
-ALTER TABLE `firkat`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `firmy`
 --
 ALTER TABLE `firmy`
-  ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `lp` (`Lp`);
+
+--
+-- Indexes for table `firmy_kategorie`
+--
+ALTER TABLE `firmy_kategorie`
+  ADD PRIMARY KEY (`firma_lp`,`kategoria_id`),
+  ADD KEY `fk_kategoria` (`kategoria_id`);
 
 --
 -- Indexes for table `kategorie`
@@ -2830,7 +2801,9 @@ ALTER TABLE `kategorie`
 -- Indexes for table `komentarze`
 --
 ALTER TABLE `komentarze`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_komentarze_user` (`user_id`),
+  ADD KEY `fk_komentarze_firma` (`firma_lp`);
 
 --
 -- Indexes for table `users`
@@ -2843,22 +2816,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `company`
---
-ALTER TABLE `company`
-  MODIFY `Lp` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5333;
-
---
--- AUTO_INCREMENT for table `firkat`
---
-ALTER TABLE `firkat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `firmy`
 --
 ALTER TABLE `firmy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Lp` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5334;
 
 --
 -- AUTO_INCREMENT for table `kategorie`
@@ -2867,10 +2828,34 @@ ALTER TABLE `kategorie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `komentarze`
+--
+ALTER TABLE `komentarze`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `firmy_kategorie`
+--
+ALTER TABLE `firmy_kategorie`
+  ADD CONSTRAINT `fk_firma` FOREIGN KEY (`firma_lp`) REFERENCES `firmy` (`Lp`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_kategoria` FOREIGN KEY (`kategoria_id`) REFERENCES `kategorie` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `komentarze`
+--
+ALTER TABLE `komentarze`
+  ADD CONSTRAINT `fk_komentarze_firma` FOREIGN KEY (`firma_lp`) REFERENCES `firmy` (`Lp`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_komentarze_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

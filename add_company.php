@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nrbudynku = $_POST['nrbudynku'] ?? null;
     $nrlokalu = $_POST['nrlokalu'] ?? null;
 
-    $stmt = $conn->prepare("INSERT INTO company (nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO firmy (nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssssssssssssss", $nip, $regon, $nazwapodmiotu, $nazwisko, $imie, $telefon, $email, $adresWWW, $kodpocztowy, $powiat, $gmina, $miejscowosc, $ulica, $nrbudynku, $nrlokalu);
     if ($stmt->execute()) {
         echo "Nowa firma została dodana pomyślnie.";

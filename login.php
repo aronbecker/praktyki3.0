@@ -1,4 +1,7 @@
 <?php
+session_start();
+session_destroy();
+
 include 'dbmanager.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

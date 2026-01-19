@@ -25,10 +25,10 @@ else {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style/styl.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <input type="button" value="Wyloguj się" onclick="window.location.href='logout.php'" id="logoutBtn">
+    <input type="button" value="Wyloguj się" onclick="window.location.href='login.php'" id="logoutBtn">
     <div class="Dheader">
     <h1 style="text-align: center;">Skoki</h1>
     </div>
@@ -38,17 +38,28 @@ else {
         <input type="submit" value="Szukaj" id="searchBtn">
     </form>
     </div>
-    <input type="button" value="Panel administracyjny" id="adminBtn" onclick="window.location.href='admin.php'">
+    <?php
+    $adminStmt = $conn->prepare("SELECT admin FROM users WHERE email = ?");
+    $adminStmt->bind_param("s", $_SESSION['login']);
+    $adminStmt->execute();
+    $adminStmt->bind_result($isAdmin);
+    $adminStmt->fetch();
+    $adminStmt->close();
+
+    if ($isAdmin == 1) {
+        echo "<input type='button' value='Panel administracyjny' id='adminBtn' onclick=\"window.location.href='admin.php'\">";
+    }
+    ?>
     <div class="companyList" id="companyList">
     <?php
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-        $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM company";
+        $sql = "SELECT lp, nazwapodmiotu, nazwisko, imie, telefon, email FROM firmy";
         
         if (!empty($searchQuery)) {
-            $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
+            $sql .= " WHERE nazwapodmiotu LIKE ? OR email LIKE ?";
             $stmt = $conn->prepare($sql);
             $likeQuery = "%" . $searchQuery . "%";
-            $stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
+            $stmt->bind_param("ss", $likeQuery, $likeQuery);
         } else {
             $stmt = $conn->prepare($sql);
         }
@@ -56,25 +67,16 @@ else {
         $stmt->execute();
         $result = $stmt->get_result();
         echo "<table border='1'>";
-        echo "<tr><th>LP</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th></tr>";
+        echo "<tr><th>LP</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Szczegóły</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . htmlspecialchars($row['lp']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['regon']) . "</td>";
             echo "<td>" . htmlspecialchars($row['nazwapodmiotu']) . "</td>";
             echo "<td>" . htmlspecialchars($row['nazwisko']) . "</td>";
             echo "<td>" . htmlspecialchars($row['imie']) . "</td>";
             echo "<td>" . htmlspecialchars($row['telefon']) . "</td>";
             echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['adreswww']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['kodpocztowy']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['powiat']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['gmina']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['miejscowosc']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['ulica']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nrbudynku']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nrlokalu']) . "</td>";
+            echo "<td><a href='company_details.php?lp=" . urlencode($row['lp']) . "'>Szczegóły</a></td>";
             echo "</tr>";
         }
         echo "</table>";

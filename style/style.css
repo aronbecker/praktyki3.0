@@ -17,10 +17,10 @@ body {
     margin-right: auto;
     margin-left: auto;
     display: block;
-    width: 75%;
+    width: 80%;
     border: 2px solid black;
     height: 550px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #search {
     display: block;

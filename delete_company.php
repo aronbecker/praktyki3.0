@@ -2,7 +2,7 @@
 include 'dbmanager.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
     $lp = $_GET['lp'];
-    $stmt = $conn->prepare("DELETE FROM company WHERE lp = ?");
+    $stmt = $conn->prepare("DELETE FROM firmy WHERE lp = ?");
     $stmt->bind_param("i", $lp);
     if ($stmt->execute()) {
         echo "Firma została usunięta pomyślnie.";
