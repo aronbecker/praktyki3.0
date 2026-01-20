@@ -19,7 +19,7 @@ body {
     display: block;
     width: 80%;
     border: 2px solid black;
-    height: 550px;
+    height: auto;
     overflow-y: scroll;
 }
 #search {

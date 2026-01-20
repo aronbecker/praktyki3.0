@@ -69,24 +69,52 @@
         <input type="submit" value="Szukaj" id="searchBtn" style="float: right;">
         </form>
     </div>
-    <div class="div" id="companyDisplay" style="width: 75%; float: right;overflow-y: scroll;height: 600px;overflow-x: scroll;">
+    <div class="div" id="companyDisplay" style="width: 75%; float: right;height: auto;overflow-x: scroll;">
     <h2>Lista Firm</h2>
     <?php
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $per_page = 25;
+        $offset = ($page - 1) * $per_page;
+        
+        $count_sql = "SELECT COUNT(*) as total FROM firmy";
+        if (!empty($searchQuery)) {
+            $count_sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
+            $count_stmt = $conn->prepare($count_sql);
+            $likeQuery = "%" . $searchQuery . "%";
+            $count_stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
+        } else {
+            $count_stmt = $conn->prepare($count_sql);
+        }
+        $count_stmt->execute();
+        $count_result = $count_stmt->get_result();
+        $total_rows = $count_result->fetch_assoc()['total'];
+        $count_stmt->close();
+        $total_pages = ceil($total_rows / $per_page);
+        if ($page > $total_pages && $total_pages > 0) $page = $total_pages;
+        $offset = ($page - 1) * $per_page;
+        
         $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy";
         
         if (!empty($searchQuery)) {
             $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
+            $sql .= " LIMIT ? OFFSET ?";
             $stmt = $conn->prepare($sql);
             $likeQuery = "%" . $searchQuery . "%";
-            $stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
+            $stmt->bind_param("sssii", $likeQuery, $likeQuery, $likeQuery, $per_page, $offset);
         } else {
+            $sql .= " LIMIT ? OFFSET ?";
             $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $per_page, $offset);
         }
         
         $stmt->execute();
         $result = $stmt->get_result();
-        echo "<table border='1'>";
+        echo "<table border='1' style='
+        width: 100%;
+        border: solid black 2px;
+        border-collapse: collapse;'>";
         echo "<tr><th>LP</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
@@ -111,6 +139,19 @@
             echo "</tr>";
         }
         echo "</table>";
+
+        if ($total_pages > 1) {
+            echo "<div style='text-align: center; margin-top: 20px;'>";
+            echo "Strona $page z $total_pages<br>";
+            $search_param = !empty($searchQuery) ? "&search=" . urlencode($searchQuery) : "";
+            if ($page > 1) {
+                echo "<a href='?page=" . ($page - 1) . $search_param . "'>Poprzednia</a> ";
+            }
+            if ($page < $total_pages) {
+                echo "<a href='?page=" . ($page + 1) . $search_param . "'>Następna</a>";
+            }
+            echo "</div>";
+        }
         $stmt->close();
         $conn->close();
     ?>

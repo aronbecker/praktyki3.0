@@ -8,14 +8,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST['login'];
     $pass = $_POST['pass'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE (login = ? OR email = ?) AND pass = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE (BINARY login = ? OR email = ?) AND BINARY pass = ?");
     $stmt->bind_param("sss", $login, $login, $pass);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
         session_start();
-        $_SESSION['login'] = $login;
+        $_SESSION['login'] = $user['login'];
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['admin'] = $user['admin'];
         header("Location: index.php");
         exit();
     } else {

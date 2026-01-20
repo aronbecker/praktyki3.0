@@ -58,13 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="email" id="email" name="email" required><br>
         <?php
         session_start();
-        $adminStmt = $conn->prepare("SELECT admin FROM users WHERE email = ?");
-            $adminStmt->bind_param("s", $_SESSION['login']);
-            $adminStmt->execute();
-            $adminStmt->bind_result($isAdmin);
-            $adminStmt->fetch();
-            $adminStmt->close();
-            if ($isAdmin == 1) {
+            if ($_SESSION['admin'] == 1) {
                 echo '<label for="admin">Administrator:</label>';
                 echo '<input type="checkbox" id="admin" name="admin" value="1"><br>';
             }

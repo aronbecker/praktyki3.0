@@ -25,7 +25,7 @@ else {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/styl.css">
 </head>
 <body>
     <input type="button" value="Wyloguj się" onclick="window.location.href='login.php'" id="logoutBtn">
@@ -39,29 +39,47 @@ else {
     </form>
     </div>
     <?php
-    $adminStmt = $conn->prepare("SELECT admin FROM users WHERE email = ?");
-    $adminStmt->bind_param("s", $_SESSION['login']);
-    $adminStmt->execute();
-    $adminStmt->bind_result($isAdmin);
-    $adminStmt->fetch();
-    $adminStmt->close();
-
-    if ($isAdmin == 1) {
+    if ($_SESSION['admin'] == 1) {
         echo "<input type='button' value='Panel administracyjny' id='adminBtn' onclick=\"window.location.href='admin.php'\">";
     }
     ?>
     <div class="companyList" id="companyList">
     <?php
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $per_page = 25;
+        $offset = ($page - 1) * $per_page;
+        
+        $count_sql = "SELECT COUNT(*) as total FROM firmy";
+        if (!empty($searchQuery)) {
+            $count_sql .= " WHERE nazwapodmiotu LIKE ? OR email LIKE ?";
+            $count_stmt = $conn->prepare($count_sql);
+            $likeQuery = "%" . $searchQuery . "%";
+            $count_stmt->bind_param("ss", $likeQuery, $likeQuery);
+        } else {
+            $count_stmt = $conn->prepare($count_sql);
+        }
+        $count_stmt->execute();
+        $count_result = $count_stmt->get_result();
+        $total_rows = $count_result->fetch_assoc()['total'];
+        $count_stmt->close();
+        $total_pages = ceil($total_rows / $per_page);
+        if ($page > $total_pages && $total_pages > 0) $page = $total_pages;
+        $offset = ($page - 1) * $per_page;
+        
         $sql = "SELECT lp, nazwapodmiotu, nazwisko, imie, telefon, email FROM firmy";
         
         if (!empty($searchQuery)) {
             $sql .= " WHERE nazwapodmiotu LIKE ? OR email LIKE ?";
+            $sql .= " LIMIT ? OFFSET ?";
             $stmt = $conn->prepare($sql);
             $likeQuery = "%" . $searchQuery . "%";
-            $stmt->bind_param("ss", $likeQuery, $likeQuery);
+            $stmt->bind_param("ssii", $likeQuery, $likeQuery, $per_page, $offset);
         } else {
+            $sql .= " LIMIT ? OFFSET ?";
             $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $per_page, $offset);
         }
         
         $stmt->execute();
@@ -80,6 +98,19 @@ else {
             echo "</tr>";
         }
         echo "</table>";
+
+        if ($total_pages > 1) {
+            echo "<div style='text-align: center; margin-top: 20px;'>";
+            echo "Strona $page z $total_pages<br>";
+            $search_param = !empty($searchQuery) ? "&search=" . urlencode($searchQuery) : "";
+            if ($page > 1) {
+                echo "<a href='?page=" . ($page - 1) . $search_param . "'>Poprzednia</a> ";
+            }
+            if ($page < $total_pages) {
+                echo "<a href='?page=" . ($page + 1) . $search_param . "'>Następna</a>";
+            }
+            echo "</div>";
+        }
         $stmt->close();
         $conn->close();
     ?>
