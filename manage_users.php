@@ -33,7 +33,7 @@ if (!empty($searchQuery)) {
 $stmt->execute();
 $result = $stmt->get_result();
 if ($result->num_rows > 0) {
-    echo "<table border='1'>
+    echo "<table border='1' class='table'>
             <tr>
                 <th>ID</th>
                 <th>Login</th>
@@ -48,8 +48,8 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['login']) . "</td>";
         echo "<td>" . htmlspecialchars($row['email']) . "</td>";
         echo "<td>" . ($row['admin'] ? 'Tak' : 'Nie') . "</td>";
-        echo "<td><a href='edit_user.php?id=" . urlencode($row['id']) . "'>Edytuj</a></td>";
-        echo "<td><a href='delete_user.php?id=" . urlencode($row['id']) . "' onclick=\"return confirm('Czy na pewno chcesz usunąć tego użytkownika?');\">Usuń</a></td>";
+        echo "<td><input type='button' value='Edytuj' class='edit' onclick=\"window.location.href='edit_user.php?id=" . urlencode($row['id']) . "'\"></td>";
+        echo "<td><input type='button' value='Usuń' class='delete' onclick=\"window.location.href='delete_user.php?id=" . urlencode($row['id']) . "'\"></td>";
         echo "</tr>";
     }
     echo "</table>";

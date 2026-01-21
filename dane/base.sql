@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 19, 2026 at 12:51 PM
+-- Generation Time: Jan 21, 2026 at 04:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,24 @@ SET time_zone = "+00:00";
 --
 -- Database: `base`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `firma_kategoria`
+--
+
+CREATE TABLE `firma_kategoria` (
+  `firma_lp` int(11) NOT NULL,
+  `kategoria_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `firma_kategoria`
+--
+
+INSERT INTO `firma_kategoria` (`firma_lp`, `kategoria_id`) VALUES
+(5333, 1);
 
 -- --------------------------------------------------------
 
@@ -2716,17 +2734,6 @@ INSERT INTO `firmy` (`Lp`, `Nip`, `Regon`, `NazwaPodmiotu`, `Nazwisko`, `Imie`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `firmy_kategorie`
---
-
-CREATE TABLE `firmy_kategorie` (
-  `firma_lp` int(11) NOT NULL,
-  `kategoria_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `kategorie`
 --
 
@@ -2735,6 +2742,14 @@ CREATE TABLE `kategorie` (
   `nazwa` varchar(100) NOT NULL,
   `id_nad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `kategorie`
+--
+
+INSERT INTO `kategorie` (`id`, `nazwa`, `id_nad`) VALUES
+(1, 'kosiarki', 0),
+(4, 'elektryka', 0);
 
 -- --------------------------------------------------------
 
@@ -2749,8 +2764,17 @@ CREATE TABLE `komentarze` (
   `data_utworzenia` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_mod` timestamp NULL DEFAULT NULL,
   `user_id` int(11) NOT NULL,
-  `firma_lp` int(11) NOT NULL
+  `firma_lp` int(11) NOT NULL,
+  `ocena` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `komentarze`
+--
+
+INSERT INTO `komentarze` (`id`, `tresc`, `autor`, `data_utworzenia`, `data_mod`, `user_id`, `firma_lp`, `ocena`) VALUES
+(1, 'nie cierpie kosiarek', 'jan', '2026-01-20 11:54:29', NULL, 2, 5333, 0),
+(3, 'Wspaniałe Kosiarki.', 'MłynCzarek', '2026-01-20 12:19:23', '2026-01-21 15:29:25', 3, 5333, 5);
 
 -- --------------------------------------------------------
 
@@ -2771,25 +2795,26 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `pass`, `email`, `admin`) VALUES
-(1, 'admin', 'admin', 'admin', 1),
-(2, 'Jan', 'haslo', 'jan@kowalski.com', 0);
+(1, 'admin', 'admin', 'admin@email', 1),
+(2, 'jan', 'haslo', 'jan@kowalski.com', 0),
+(3, 'MłynCzarek', 'Kosiarka', 'czarek.mlyncarek@kosiarka.biznes.pl', 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `firma_kategoria`
+--
+ALTER TABLE `firma_kategoria`
+  ADD PRIMARY KEY (`firma_lp`,`kategoria_id`),
+  ADD KEY `fk_kategoria` (`kategoria_id`);
+
+--
 -- Indexes for table `firmy`
 --
 ALTER TABLE `firmy`
   ADD UNIQUE KEY `lp` (`Lp`);
-
---
--- Indexes for table `firmy_kategorie`
---
-ALTER TABLE `firmy_kategorie`
-  ADD PRIMARY KEY (`firma_lp`,`kategoria_id`),
-  ADD KEY `fk_kategoria` (`kategoria_id`);
 
 --
 -- Indexes for table `kategorie`
@@ -2825,28 +2850,28 @@ ALTER TABLE `firmy`
 -- AUTO_INCREMENT for table `kategorie`
 --
 ALTER TABLE `kategorie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `komentarze`
 --
 ALTER TABLE `komentarze`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `firmy_kategorie`
+-- Constraints for table `firma_kategoria`
 --
-ALTER TABLE `firmy_kategorie`
+ALTER TABLE `firma_kategoria`
   ADD CONSTRAINT `fk_firma` FOREIGN KEY (`firma_lp`) REFERENCES `firmy` (`Lp`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_kategoria` FOREIGN KEY (`kategoria_id`) REFERENCES `kategorie` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
