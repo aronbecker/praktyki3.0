@@ -132,6 +132,9 @@ else {
             echo "</tr>";
         }
         echo "</table>";
+        ?>
+        </div>
+        <?php
 
         if ($total_pages > 1) {
             echo "<div style='text-align: center; margin-top: 20px;'>";
