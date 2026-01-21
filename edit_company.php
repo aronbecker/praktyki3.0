@@ -88,6 +88,179 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                     text-align: center;
                     margin-top: 10px;
                 }
+
+                * {
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+/* PRZYCISK OTWIERAJĄCY */
+#addCategoryBtn {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 10px 20px rgba(99,102,241,0.25);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.fajny_przycisk {
+      padding: 10px 18px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 10px 20px rgba(99,102,241,0.25);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+#addCategoryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(99,102,241,0.35);
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+/* KARTA MODALA */
+.modal-content {
+  width: 100%;
+  max-width: 360px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+  animation: modalIn .25s ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    transform: translateY(15px) scale(.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* NAGŁÓWEK */
+.modal-content h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* FORM */
+form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+/* SELECT */
+form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5f5;
+  background: #f8fafc;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+form select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* BUTTONS */
+.actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all .15s ease;
+}
+
+/* ZAPISZ */
+.actions button[type="submit"] {
+  background: #6366f1;
+  color: white;
+}
+
+.actions button[type="submit"]:hover {
+  background: #4f46e5;
+}
+
+/* ANULUJ */
+#closeModal {
+  background: #e5e7eb;
+  color: #334155;
+}
+
+#closeModal:hover {
+  background: #d1d5db;
+}
+
+
+                .hidden {
+                    display: none!important;
+                }
+
+                .modal {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                }
+
+                .modal-content {
+                background: #fff;
+                padding: 20px;
+                border-radius: 6px;
+                width: 300px;
+                }
+
+                .actions {
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+                }
             </style>
         </head>
         <body>
@@ -143,7 +316,8 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
 </div>
             </form>
             </div>
-            <input type="button" value="Powrót do panelu administracyjnego" onclick="window.location.href='admin.php'">
+            <input type="button" value="Powrót do panelu administracyjnego" onclick="window.location.href='admin.php'" class="fajny_przycisk">
+            <button id="addCategoryBtn">DODAJ KATEGORIE</button>
             <script>
                 function kategorieOkienko() {
                     var kategoria = prompt("Wpisz kategorię:");
@@ -161,5 +335,62 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                     }
                 }
             </script>
+
+            <div id="categoryModal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Dodaj kategorię</h3>
+
+                <form id="categoryForm" >
+                <label for="categorySelect">Wybierz kategorię:</label>
+                <select id="categorySelect" required>
+                    <?php ?>
+                    <option value="1">Usługi budowlane</option>
+                    <option value="2">Usługi ksiegowe</option>
+                </select>
+
+                <div class="actions">
+                    <button type="submit">Zapisz</button>
+                    <button type="button" id="closeModal">Anuluj</button>
+                </div>
+                </form>
+            </div>
+            </div>
+            <script>
+                const addCategoryBtn = document.getElementById('addCategoryBtn');
+                const modal = document.getElementById('categoryModal');
+                const closeModalBtn = document.getElementById('closeModal');
+                const categorySelect = document.getElementById('categorySelect');
+                const categoryForm = document.getElementById('categoryForm');
+
+                // Otwórz popup
+                addCategoryBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                });
+
+                // Zamknij popup
+                closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                });
+
+
+                // Obsługa formularza
+                categoryForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const selectedCategoryId = categorySelect.value;
+
+                if (!selectedCategoryId) return;
+
+                console.log('Wybrana kategoria ID:', selectedCategoryId);
+
+                // tutaj możesz:
+                // - wysłać dane do backendu
+                // - dodać kategorię do widoku
+                // - zamknąć modal
+
+                modal.classList.add('hidden');
+                });
+
+                </script>
         </body>
         </html>

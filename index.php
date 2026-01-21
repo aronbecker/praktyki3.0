@@ -84,7 +84,10 @@ else {
         
         $stmt->execute();
         $result = $stmt->get_result();
-        echo "<table border='1'>";
+        ?>
+        <div class="table-wrapper">
+        <?php
+        echo "<table border='1'  class='data-table'>";
         echo "<tr><th>LP</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Szczegóły</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
@@ -98,6 +101,9 @@ else {
             echo "</tr>";
         }
         echo "</table>";
+        ?>
+        </div>
+        <?php
 
         if ($total_pages > 1) {
             echo "<div style='text-align: center; margin-top: 20px;'>";
