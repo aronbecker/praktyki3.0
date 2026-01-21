@@ -88,6 +88,25 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                     text-align: center;
                     margin-top: 10px;
                 }
+                .hidden{
+                    display: none;
+                }
+                select, option{
+                    width: 80%;
+                    height: 30px;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+                .dimmer {
+                        background: #000;
+                        opacity: 0.5;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 0;
+                    }
             </style>
         </head>
         <body>
@@ -143,23 +162,42 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
 </div>
             </form>
             </div>
+            <div class="dimmer hidden"></div>
+            <div class="modal hidden" style="
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 2px solid black; width: 300px; text-align: center;">
+                    <h3>Dodaj kategorię</h3>
+                    <form method="POST" action="add_kategoria.php">
+                        <input type="hidden" name="lp" value="<?php echo htmlspecialchars($lp); ?>">
+                        <select name="kategoria" id="sel">
+                        <?php
+                        $result = $conn->query("SELECT nazwa FROM kategorie");
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . htmlspecialchars($row['nazwa']) . "'>" . htmlspecialchars($row['nazwa']) . "</option>";
+                            }
+                        }
+                        ?>
+                        </select>
+                        <input type="submit" value="Dodaj">
+                    </form>
+                    <input type="button" id="closeModal" value="Zamknij">
+                </div>
             <input type="button" value="Powrót do panelu administracyjnego" onclick="window.location.href='admin.php'">
+            
             <script>
+                
                 function kategorieOkienko() {
-                    var kategoria = prompt("Wpisz kategorię:");
-                    if (kategoria != null && kategoria.trim() !== "") {
-                        fetch('add_kategoria.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: 'lp=' + encodeURIComponent(<?php echo $lp; ?>) + '&kategoria=' + encodeURIComponent(kategoria)
-                        })
-                        .then(response => response.text())
-                        .then(data => alert(data))
-                        .catch(error => alert('Błąd: ' + error));
-                    }
+                    let modal = document.querySelector('.modal');
+                    let dimmer = document.querySelector('.dimmer');
+                    dimmer.classList.remove('hidden');
+                    modal.classList.remove('hidden');
                 }
+                document.getElementById('closeModal').addEventListener('click', function() {
+                    let modal = document.querySelector('.modal');
+                    let dimmer = document.querySelector('.dimmer');
+                    dimmer.classList.add('hidden');
+                    modal.classList.add('hidden');
+                });
             </script>
         </body>
         </html>

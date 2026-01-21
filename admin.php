@@ -20,14 +20,19 @@
             margin-right:auto;
             display: block;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>Panel administracyjny</h1>
     <input type="button" value="Powrót do strony głównej" onclick="window.location.href='index.php'" style="margin-bottom: 20px; float: left;">
     <input type="button" value="Zarządzaj użytkownikami" onclick="window.location.href='manage_users.php'" style="margin-bottom: 20px; float: right;">
+    <h1>Panel administracyjny</h1>
+    <br>
+    <input type="button" value="pokaż/ukryj formularz dodawania firmy" id="toggleFormBtn" style="margin-bottom: 20px; float: left;">
     <br><br><br><br>
-    <div class="div" id='form' style="float: left; margin-right: 50px; padding">
+    <div class="div hidden" id='form' style="float: left; margin-right: 50px; padding">
     <h2>Dodaj Firmę</h2>
     <form method="POST" action="add_company.php" style="float: left; margin-left: 20px;">
         <label for="NIP">NIP:</label><br>
@@ -63,29 +68,55 @@
         <input type="submit" value="Zatwierdź">
     </form>
     </div>
-    <div style='width: 75%; float: right; margin-bottom: 20px;'>
+    <div style='width: 98%; float: right; margin-bottom: 20px;' id='searchbox'>
         <form method="GET" action="">
+        <label for="sel">Kategoria:</label>
+        <select name="kategoria" id="sel" style="margin-right: 10px;">
+            <option value="">Wszystkie kategorie</option>
+            <?php
+            $cat_stmt = $conn->prepare("SELECT id, nazwa FROM kategorie ORDER BY nazwa ASC");
+            $cat_stmt->execute();
+            $cat_result = $cat_stmt->get_result();
+            while ($cat_row = $cat_result->fetch_assoc()) {
+                $selected = (isset($_GET['kategoria']) && $_GET['kategoria'] == $cat_row['id']) ? 'selected' : '';
+                echo "<option value='" . htmlspecialchars($cat_row['id']) . "' " . $selected . ">" . htmlspecialchars($cat_row['nazwa']) . "</option>";
+            }
+            $cat_stmt->close();
+            ?>
+        </select>
+        <br><br>
         <input type="text" id="search" name="search" placeholder="Szukaj..." style='width: 70%; float: left;'>
         <input type="submit" value="Szukaj" id="searchBtn" style="float: right;">
         </form>
     </div>
-    <div class="div" id="companyDisplay" style="width: 75%; float: right;height: auto;overflow-x: scroll;">
+    <div class="div" id="companyList" style="width: 98%; float: right;height: auto;overflow-x: scroll;">
     <h2>Lista Firm</h2>
     <?php
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+        $kategoria = isset($_GET['kategoria']) ? (int)$_GET['kategoria'] : 0;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) $page = 1;
         $per_page = 25;
         $offset = ($page - 1) * $per_page;
         
-        $count_sql = "SELECT COUNT(*) as total FROM firmy";
-        if (!empty($searchQuery)) {
+        $count_sql = "SELECT COUNT(DISTINCT firmy.lp) as total FROM firmy";
+        if ($kategoria > 0) {
+            $count_sql .= " JOIN firma_kategoria fk ON firmy.lp = fk.firma_lp WHERE fk.kategoria_id = ?";
+            if (!empty($searchQuery)) {
+                $count_sql .= " AND (nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?)";
+            }
+        } elseif (!empty($searchQuery)) {
             $count_sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
-            $count_stmt = $conn->prepare($count_sql);
-            $likeQuery = "%" . $searchQuery . "%";
+        }
+        
+        $count_stmt = $conn->prepare($count_sql);
+        $likeQuery = "%" . $searchQuery . "%";
+        if ($kategoria > 0 && !empty($searchQuery)) {
+            $count_stmt->bind_param("isss", $kategoria, $likeQuery, $likeQuery, $likeQuery);
+        } elseif ($kategoria > 0) {
+            $count_stmt->bind_param("i", $kategoria);
+        } elseif (!empty($searchQuery)) {
             $count_stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
-        } else {
-            $count_stmt = $conn->prepare($count_sql);
         }
         $count_stmt->execute();
         $count_result = $count_stmt->get_result();
@@ -95,26 +126,31 @@
         if ($page > $total_pages && $total_pages > 0) $page = $total_pages;
         $offset = ($page - 1) * $per_page;
         
-        $sql = "SELECT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy";
-        
-        if (!empty($searchQuery)) {
+        $sql = "SELECT DISTINCT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy";
+        if ($kategoria > 0) {
+            $sql .= " JOIN firma_kategoria fk ON firmy.lp = fk.firma_lp WHERE fk.kategoria_id = ?";
+            if (!empty($searchQuery)) {
+                $sql .= " AND (nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?)";
+            }
+        } elseif (!empty($searchQuery)) {
             $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
-            $sql .= " LIMIT ? OFFSET ?";
-            $stmt = $conn->prepare($sql);
-            $likeQuery = "%" . $searchQuery . "%";
+        }
+        $sql .= " LIMIT ? OFFSET ?";
+        
+        $stmt = $conn->prepare($sql);
+        if ($kategoria > 0 && !empty($searchQuery)) {
+            $stmt->bind_param("isssii", $kategoria, $likeQuery, $likeQuery, $likeQuery, $per_page, $offset);
+        } elseif ($kategoria > 0) {
+            $stmt->bind_param("iii", $kategoria, $per_page, $offset);
+        } elseif (!empty($searchQuery)) {
             $stmt->bind_param("sssii", $likeQuery, $likeQuery, $likeQuery, $per_page, $offset);
         } else {
-            $sql .= " LIMIT ? OFFSET ?";
-            $stmt = $conn->prepare($sql);
             $stmt->bind_param("ii", $per_page, $offset);
         }
         
         $stmt->execute();
         $result = $stmt->get_result();
-        echo "<table border='1' style='
-        width: 100%;
-        border: solid black 2px;
-        border-collapse: collapse;'>";
+        echo "<table border='1' class='table'>";
         echo "<tr><th>LP</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
@@ -134,8 +170,8 @@
             echo "<td>" . htmlspecialchars($row['ulica']) . "</td>";
             echo "<td>" . htmlspecialchars($row['nrbudynku']) . "</td>";
             echo "<td>" . htmlspecialchars($row['nrlokalu']) . "</td>";
-            echo "<td><a href='edit_company.php?lp=" . urlencode($row['lp']) . "'>Edytuj</a></td>";
-            echo "<td><a href='delete_company.php?lp=" . urlencode($row['lp']) . "' onclick=\"return confirm('Czy na pewno chcesz usunąć tę firmę?');\">Usuń</a></td>";
+            echo "<td><input type='button' value='Edytuj' class='edit' onclick=\"window.location.href='edit_company.php?lp=" . urlencode($row['lp']) . "'\"></td>";
+            echo "<td><input type='button' value='Usuń' class='delete' onclick=\"window.location.href='delete_company.php?lp=" . urlencode($row['lp']) . "'\"></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -144,11 +180,12 @@
             echo "<div style='text-align: center; margin-top: 20px;'>";
             echo "Strona $page z $total_pages<br>";
             $search_param = !empty($searchQuery) ? "&search=" . urlencode($searchQuery) : "";
+            $kategoria_param = ($kategoria > 0) ? "&kategoria=" . $kategoria : "";
             if ($page > 1) {
-                echo "<a href='?page=" . ($page - 1) . $search_param . "'>Poprzednia</a> ";
+                echo "<a href='?page=" . ($page - 1) . $kategoria_param . $search_param . "'>Poprzednia</a> ";
             }
             if ($page < $total_pages) {
-                echo "<a href='?page=" . ($page + 1) . $search_param . "'>Następna</a>";
+                echo "<a href='?page=" . ($page + 1) . $kategoria_param . $search_param . "'>Następna</a>";
             }
             echo "</div>";
         }
@@ -156,5 +193,22 @@
         $conn->close();
     ?>
     </div>
+    <script>
+        document.getElementById('toggleFormBtn').addEventListener('click', function() {
+            let formDiv = document.getElementById('form');
+            let searchBox = document.getElementById('searchbox');
+            let companyList = document.getElementById('companyList');
+
+            if (formDiv.classList.contains('hidden')) {
+                formDiv.classList.remove('hidden');
+                searchBox.style.width = '75%';
+                companyList.style.width = '75%';
+            } else {
+                formDiv.classList.add('hidden');
+                searchBox.style.width = '98%';
+                companyList.style.width = '98%';
+            }
+        });
+    </script>
     </body>
 </html>

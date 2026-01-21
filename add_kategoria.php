@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['lp']) && isset($_POST
         $stmt->bind_param("ii", $lp, $kategoria_id);
         if ($stmt->execute()) {
             echo "Kategoria została dodana pomyślnie.";
+            header("Location: edit_company.php?lp=" . urlencode($lp));
+            exit();;
         } else {
             echo "Błąd podczas dodawania kategorii: " . $stmt->error;
         }
