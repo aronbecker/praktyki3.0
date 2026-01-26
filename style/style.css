@@ -16,26 +16,12 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
-    width: 80%;
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 2px solid black;
     border-radius: 5px;
     float: left;
-}
-#searchBtn {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: white;
-    color: black;
-    border: 2px solid black;
-    border-radius: 5px;
-    cursor: pointer;
-    float: right;
 }
 #logoutBtn {
     position: absolute;
@@ -82,11 +68,16 @@ body {
     border-radius: 5px;
 }
 .companyList {
-    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 95%;
     overflow-x: auto;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    overflow-y: scroll;
+    max-height: 500px;
 }
 
 /* Główna tabela */
@@ -161,4 +152,7 @@ body {
 .table .btn.delete {
     background: #fee2e2;
     color: #991b1b;
+}
+.hidden{
+    display: none;
 }

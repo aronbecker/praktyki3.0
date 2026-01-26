@@ -69,92 +69,42 @@
     </form>
     </div>
     <div style='width: 98%; float: right; margin-bottom: 20px;' id='searchbox'>
-        <form method="GET" action="">
+        <form>
         <label for="sel">Kategoria:</label>
-        <select name="kategoria" id="sel" style="margin-right: 10px;">
+        <select name="kategoria" id="sel" style="margin-right: 10px;" onchange="filterCompanies()">
             <option value="">Wszystkie kategorie</option>
             <?php
             $cat_stmt = $conn->prepare("SELECT id, nazwa FROM kategorie ORDER BY nazwa ASC");
             $cat_stmt->execute();
             $cat_result = $cat_stmt->get_result();
             while ($cat_row = $cat_result->fetch_assoc()) {
-                $selected = (isset($_GET['kategoria']) && $_GET['kategoria'] == $cat_row['id']) ? 'selected' : '';
-                echo "<option value='" . htmlspecialchars($cat_row['id']) . "' " . $selected . ">" . htmlspecialchars($cat_row['nazwa']) . "</option>";
+                echo "<option value='" . htmlspecialchars($cat_row['id']) . "' " . ">" . htmlspecialchars($cat_row['nazwa']) . "</option>";
             }
             $cat_stmt->close();
             ?>
         </select>
         <br><br>
-        <input type="text" id="search" name="search" placeholder="Szukaj..." style='width: 70%; float: left;'>
-        <input type="submit" value="Szukaj" id="searchBtn" style="float: right;">
+        <input type="text" id="search" name="search" placeholder="Szukaj..." style='width: 70%; float: left;' onkeyup="filterCompanies()">
         </form>
     </div>
-    <div class="div" id="companyList" style="width: 98%; float: right;height: auto;overflow-x: scroll;">
+    <div class="div" id="companyList" style="width: 98%; float: right;height: auto;overflow-x: scroll; overflow-y: scroll; max-height: 600px;">
     <h2>Lista Firm</h2>
     <?php
-        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-        $kategoria = isset($_GET['kategoria']) ? (int)$_GET['kategoria'] : 0;
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
-        $per_page = 25;
-        $offset = ($page - 1) * $per_page;
-        
-        $count_sql = "SELECT COUNT(DISTINCT firmy.lp) as total FROM firmy";
-        if ($kategoria > 0) {
-            $count_sql .= " JOIN firma_kategoria fk ON firmy.lp = fk.firma_lp WHERE fk.kategoria_id = ?";
-            if (!empty($searchQuery)) {
-                $count_sql .= " AND (nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?)";
-            }
-        } elseif (!empty($searchQuery)) {
-            $count_sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
-        }
-        
-        $count_stmt = $conn->prepare($count_sql);
-        $likeQuery = "%" . $searchQuery . "%";
-        if ($kategoria > 0 && !empty($searchQuery)) {
-            $count_stmt->bind_param("isss", $kategoria, $likeQuery, $likeQuery, $likeQuery);
-        } elseif ($kategoria > 0) {
-            $count_stmt->bind_param("i", $kategoria);
-        } elseif (!empty($searchQuery)) {
-            $count_stmt->bind_param("sss", $likeQuery, $likeQuery, $likeQuery);
-        }
-        $count_stmt->execute();
-        $count_result = $count_stmt->get_result();
-        $total_rows = $count_result->fetch_assoc()['total'];
-        $count_stmt->close();
-        $total_pages = ceil($total_rows / $per_page);
-        if ($page > $total_pages && $total_pages > 0) $page = $total_pages;
-        $offset = ($page - 1) * $per_page;
-        
-        $sql = "SELECT DISTINCT lp, nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy";
-        if ($kategoria > 0) {
-            $sql .= " JOIN firma_kategoria fk ON firmy.lp = fk.firma_lp WHERE fk.kategoria_id = ?";
-            if (!empty($searchQuery)) {
-                $sql .= " AND (nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?)";
-            }
-        } elseif (!empty($searchQuery)) {
-            $sql .= " WHERE nazwapodmiotu LIKE ? OR nip LIKE ? OR email LIKE ?";
-        }
-        $sql .= " LIMIT ? OFFSET ?";
+        $sql = "SELECT DISTINCT f.lp, COALESCE(k.nazwa, 'Brak kategorii') AS kategoria, f.nip, f.regon, f.nazwapodmiotu, f.nazwisko, f.imie, f.telefon, f.email, f.adreswww, f.kodpocztowy, f.powiat, f.gmina, f.miejscowosc, f.ulica, f.nrbudynku, f.nrlokalu 
+                FROM firmy f 
+                LEFT JOIN firma_kategoria fk ON f.lp = fk.firma_lp 
+                LEFT JOIN kategorie k ON fk.kategoria_id = k.id 
+                ORDER BY f.lp ASC";
         
         $stmt = $conn->prepare($sql);
-        if ($kategoria > 0 && !empty($searchQuery)) {
-            $stmt->bind_param("isssii", $kategoria, $likeQuery, $likeQuery, $likeQuery, $per_page, $offset);
-        } elseif ($kategoria > 0) {
-            $stmt->bind_param("iii", $kategoria, $per_page, $offset);
-        } elseif (!empty($searchQuery)) {
-            $stmt->bind_param("sssii", $likeQuery, $likeQuery, $likeQuery, $per_page, $offset);
-        } else {
-            $stmt->bind_param("ii", $per_page, $offset);
-        }
-        
         $stmt->execute();
         $result = $stmt->get_result();
         echo "<table border='1' class='table'>";
-        echo "<tr><th>LP</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th></tr>";
+        echo "<tr><th>LP</th><th>Kategoria</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th><th>Edytuj</th><th>Usuń</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . htmlspecialchars($row['lp']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['kategoria']) . "</td>";
             echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
             echo "<td>" . htmlspecialchars($row['regon']) . "</td>";
             echo "<td>" . htmlspecialchars($row['nazwapodmiotu']) . "</td>";
@@ -175,25 +125,38 @@
             echo "</tr>";
         }
         echo "</table>";
-
-        if ($total_pages > 1) {
-            echo "<div style='text-align: center; margin-top: 20px;'>";
-            echo "Strona $page z $total_pages<br>";
-            $search_param = !empty($searchQuery) ? "&search=" . urlencode($searchQuery) : "";
-            $kategoria_param = ($kategoria > 0) ? "&kategoria=" . $kategoria : "";
-            if ($page > 1) {
-                echo "<a href='?page=" . ($page - 1) . $kategoria_param . $search_param . "'>Poprzednia</a> ";
-            }
-            if ($page < $total_pages) {
-                echo "<a href='?page=" . ($page + 1) . $kategoria_param . $search_param . "'>Następna</a>";
-            }
-            echo "</div>";
-        }
         $stmt->close();
         $conn->close();
     ?>
     </div>
     <script>
+        function filterCompanies() {
+            let searchInput = document.getElementById('search').value.toLowerCase();
+            let categorySelect = document.getElementById('sel');
+            let selectedCategory = categorySelect.options[categorySelect.selectedIndex].value;
+            let companyRows = document.querySelectorAll('#companyList table tr');
+            companyRows.forEach((row, index) => {
+                if (index === 0) return; // Skip header row
+                let cells = row.getElementsByTagName('td');
+                let kategoria = cells[1].textContent.toLowerCase();
+                let nazwa = cells[4].textContent.toLowerCase();
+                let nazwisko = cells[5].textContent.toLowerCase();
+                let imie = cells[6].textContent.toLowerCase();
+                let matchesSearch = nazwa.includes(searchInput) || nazwisko.includes(searchInput) || imie.includes(searchInput);
+
+                let matchesCategory = true;
+                if (selectedCategory == "") {
+                    matchesCategory = true;
+                } else if (kategoria !== categorySelect.options[categorySelect.selectedIndex].text.toLowerCase()) {
+                    matchesCategory = false;
+                }
+                if (matchesSearch && matchesCategory) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
         document.getElementById('toggleFormBtn').addEventListener('click', function() {
             let formDiv = document.getElementById('form');
             let searchBox = document.getElementById('searchbox');
