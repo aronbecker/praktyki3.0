@@ -24,9 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Edytuj użytkownika</title>
             <link rel="stylesheet" href="style/style2.css">
+            <style>
+                form>label, input{
+                    display:block;
+                    text-align:center;
+                }
+            </style>
         </head>
         <body>
+            <div style='width: 30%;'>
             <h2>Edytuj użytkownika</h2>
+            </div>
+            <div style='width: 30%;'>
             <form method="POST" action="update_user.php">
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
                 <label for="login">Login:</label><br>
@@ -39,5 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
                 <input type="checkbox" id="admin" name="admin" value="1" <?php echo $adminSts ? 'checked' : ''; ?>><br><br>
                 <input type="submit" value="Zaktualizuj użytkownika">
             </form>
+</div>
         </body>
         </html>

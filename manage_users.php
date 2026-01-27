@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="style/style2.css">
 </head>
 <body>
+    <div style="width:30%">
     <h2>Zarządzaj użytkownikami</h2>
+    </div>
     <input type="button" value="Powrót do panelu administratora" onclick="window.location.href='admin.php'" style="margin-bottom: 20px; float: left;">
     <input type="button" value="Dodaj nowego użytkownika" onclick="window.location.href='register.php'" style="margin-bottom: 20px; float: right;">
     <br><br><br>
@@ -17,7 +19,7 @@
         <input type="submit" value="Szukaj" id="searchBtn" style="float: right;">
     </form>
 </div>
-<div>
+<div class='companyList'>
 <?php
 include 'dbmanager.php';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
@@ -53,6 +55,7 @@ if ($result->num_rows > 0) {
         echo "</tr>";
     }
     echo "</table>";
+    echo "</div>";
 } else {
     echo "Brak użytkowników do wyświetlenia.";
 }

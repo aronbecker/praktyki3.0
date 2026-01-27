@@ -58,9 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="email" id="email" name="email" required><br>
         <?php
         session_start();
+            if (array_key_exists('admin', $_SESSION)){
             if ($_SESSION['admin'] == 1) {
                 echo '<label for="admin">Administrator:</label>';
                 echo '<input type="checkbox" id="admin" name="admin" value="1"><br>';
+            }
             }
         ?>
         <input type="submit" value="Zarejestruj się">

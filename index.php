@@ -15,7 +15,7 @@ else {
     } else {
         $displayName = $_SESSION['login'];
     }
-    echo "<div style='padding: 10px; border: 2px solid black; background-color: white; float: left; width: 10%;'>" . "Witaj, " . htmlspecialchars($displayName) . "!" . "</div>";
+    echo "<div style='padding: 10px; border: none; background-color: white; float: left; width: 10%;'>" . "Witaj, " . htmlspecialchars($displayName) . "!" . "</div>";
     $stmt->close();
 }
 ?>
@@ -48,7 +48,6 @@ else {
             $cat_stmt->close();
             ?>
         </select>
-        <br><br>
         <input type="text" id="search" name="search" placeholder="Szukaj..." onkeyup="filterCompanies()">
     </form>
     </div>

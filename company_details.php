@@ -16,7 +16,9 @@ session_start();
     </style>
 </head>
 <body>
+    <div>
 <h2>Więcej danych o firmie</h2>
+</div>
 <input type="button" value="Powrót do strony głównej" onclick="window.location.href='index.php'" style="margin-bottom: 20px;">
 <div style="margin-bottom: 30px;">
     <?php
@@ -61,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
         <input type="hidden" id="ocena" name="ocena" value="1">
         <p>Ocena: <span id="stars1">★</span><span id="stars2">☆</span><span id="stars3">☆</span><span id="stars4">☆</span><span id="stars5">☆</span></p>
         <textarea name="comment" rows="4" cols="100" placeholder="Dodaj komentarz..."></textarea><br>
-        <input type="submit" value="Dodaj Komentarz">
+        <input type="submit" value="Dodaj Komentarz" style="display: inline;">
     </form>
     <?php
     include 'dbmanager.php';
@@ -95,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                     }
                     echo "</p>";
                     echo "<textarea name='comment' rows='4' cols='100'>" . htmlspecialchars($row['tresc']) . "</textarea><br>";
-                    echo "<input type='submit' value='Edytuj komentarz'>";
+                    echo "<input type='submit' value='Edytuj komentarz' style='display:inline;'>";
                     echo "</form>";
                     echo "<script>
                     const stars_" . $row['id'] . " = document.querySelectorAll('span[id^=\"edit_stars_" . $row['id'] . "_\"]');
@@ -111,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                     echo "<form action='delete_comment.php' method='POST' onsubmit='return confirm(\"Czy na pewno chcesz usunąć ten komentarz?\");'>";
                     echo "<input type='hidden' name='comment_id' value='" . htmlspecialchars($row['id']) . "'>";
                     echo "<input type='hidden' name='lp' value='" . htmlspecialchars($lp) . "'>";
-                    echo "<input type='submit' value='Usuń komentarz'>";
+                    echo "<input type='submit' value='Usuń komentarz' style='display:inline;'>";
                     echo "</form>";
                 }
                 

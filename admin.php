@@ -68,7 +68,7 @@
         <input type="submit" value="Zatwierdź">
     </form>
     </div>
-    <div style='width: 98%; float: right; margin-bottom: 20px;' id='searchbox'>
+    <div style='width: 96%; float: right; margin-bottom: 20px; margin-right: 10px;' id='searchbox'>
         <form>
         <label for="sel">Kategoria:</label>
         <select name="kategoria" id="sel" style="margin-right: 10px;" onchange="filterCompanies()">
@@ -87,7 +87,7 @@
         <input type="text" id="search" name="search" placeholder="Szukaj..." style='width: 70%; float: left;' onkeyup="filterCompanies()">
         </form>
     </div>
-    <div class="div" id="companyList" style="width: 98%; float: right;height: auto;overflow-x: scroll; overflow-y: scroll; max-height: 600px;">
+    <div class="div" id="companyList" style="width: 96%; float: right;height: auto;overflow-x: scroll; overflow-y: scroll; max-height: 600px; margin-right: 10px;">
     <h2>Lista Firm</h2>
     <?php
         $sql = "SELECT DISTINCT f.lp, COALESCE(k.nazwa, 'Brak kategorii') AS kategoria, f.nip, f.regon, f.nazwapodmiotu, f.nazwisko, f.imie, f.telefon, f.email, f.adreswww, f.kodpocztowy, f.powiat, f.gmina, f.miejscowosc, f.ulica, f.nrbudynku, f.nrlokalu 
@@ -164,12 +164,12 @@
 
             if (formDiv.classList.contains('hidden')) {
                 formDiv.classList.remove('hidden');
-                searchBox.style.width = '75%';
-                companyList.style.width = '75%';
+                searchBox.style.width = '70%';
+                companyList.style.width = '70%';
             } else {
                 formDiv.classList.add('hidden');
-                searchBox.style.width = '98%';
-                companyList.style.width = '98%';
+                searchBox.style.width = '96%';
+                companyList.style.width = '96%';
             }
         });
     </script>

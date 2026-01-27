@@ -1,49 +1,73 @@
-body{
-    background-color: lightgrey;
-    font-family: Arial, Helvetica, sans-serif;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: #333;
 }
-div{
-    padding: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    width: auto;
-    height: auto;
-    border: 2px solid black;
-    box-shadow: 10px 10px 5px grey;
+
+div {
+    padding: 20px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 }
-h1,h2{
+
+h1, h2 {
     text-align: center;
+    color: #4a5568;
+    margin-bottom: 20px;
 }
-input{ 
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    padding: 10px 20px;
+
+input {
+    margin: 10px auto;
+    padding: 12px 20px;
     font-size: 16px;
-    background-color: white;
-    color: black;
-    border: 2px solid black;
-    border-radius: 5px;
+    background: white;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-input[type="button"], input[type="submit"]{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    padding: 10px 20px;
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input[type="button"], input[type="submit"] {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 24px;
     font-size: 16px;
-    background-color: white;
-    color: black;
-    border: 2px solid black;
-    border-radius: 5px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+input[type="button"]:hover, input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
 .companyList {
-    width: 100%;
+    margin: 20px auto;
+    width: 95%;
     overflow-x: auto;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 /* Główna tabela */
@@ -60,73 +84,93 @@ input[type="button"], input[type="submit"]{
 .table thead th {
     position: sticky;
     top: 0;
-    background: #f9fafb;
-    color: #374151;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
     text-align: left;
     font-weight: 600;
-    padding: 14px 16px;
-    border-bottom: 2px solid #e5e7eb;
+    padding: 16px;
+    border-bottom: none;
     z-index: 1;
 }
 
 /* Wiersze */
 .table tbody tr {
-    transition: background 0.15s ease;
+    transition: all 0.2s ease;
 }
 
 .table tbody tr:hover {
-    background: #f3f4f6;
+    background: #f8fafc;
+    transform: scale(1.01);
 }
 
 /* Komórki */
 .table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
     vertical-align: middle;
 }
 
 /* Zebra stripes */
 .table tbody tr:nth-child(even) {
-    background: #fcfcfd;
+    background: #f1f5f9;
 }
 
 /* Tekst pomocniczy */
 .table .muted {
-    color: #6b7280;
+    color: #94a3b8;
     font-size: 12px;
 }
 
 /* Akcje */
 .table .actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .table .btn {
-    padding: 6px 10px;
-    border-radius: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .table .edit {
-    background: #e0f2fe;
-    color: #0369a1;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.table .edit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .table .delete {
-    background: #fee2e2;
-    color: #991b1b;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
 }
-#sel{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    padding: 10px;
+
+.table .delete:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+#sel {
+    margin: 20px auto;
+    padding: 12px;
     font-size: 16px;
-    background-color: white;
-    color: black;
-    border: 2px solid black;
-    border-radius: 5px;
+    background: white;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+#sel:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
