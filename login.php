@@ -1,32 +1,51 @@
 <?php
 session_start();
 session_destroy();
+include_once 'class/DBManager.php';
+include_once 'class/users.php';
 
-include 'dbmanager.php';
+// include 'dbmanager.php';
 
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $login = $_POST['login'];
+//     $pass = $_POST['pass'];
+
+//     $stmt = $conn->prepare("SELECT * FROM users WHERE (BINARY login = ? OR email = ?) AND BINARY pass = ?");
+//     $stmt->bind_param("sss", $login, $login, $pass);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+
+//     if ($result->num_rows > 0) {
+//         $user = $result->fetch_assoc();
+//         session_start();
+//         $_SESSION['login'] = $user['login'];
+//         $_SESSION['user_id'] = $user['id'];
+//         $_SESSION['admin'] = $user['admin'];
+//         header("Location: index.php");
+//         exit();
+//     } else {
+//         echo "Nieprawidłowa nazwa użytkownika lub hasło.";
+//     }
+
+//     $stmt->close();
+//     $conn->close();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST['login'];
     $pass = $_POST['pass'];
+    $users = new Users();
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE (BINARY login = ? OR email = ?) AND BINARY pass = ?");
-    $stmt->bind_param("sss", $login, $login, $pass);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $user = $users->authenticate($_POST['login'], $_POST['pass']);
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
+    if ($user){
         session_start();
-        $_SESSION['login'] = $user['login'];
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['admin'] = $user['admin'];
+        $_SESSION['login']   = $user['login'];
+        $_SESSION['admin']   = $user['admin'];
         header("Location: index.php");
         exit();
     } else {
         echo "Nieprawidłowa nazwa użytkownika lub hasło.";
     }
-
-    $stmt->close();
-    $conn->close();
 }
 ?>
 <!DOCTYPE html>
