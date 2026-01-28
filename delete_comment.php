@@ -1,17 +1,19 @@
 <?php
-include 'dbmanager.php';
-if(isset($_POST['comment_id'])){
-    $commnent_id = $_POST['comment_id'];
-    $stmt = $conn->prepare("DELETE FROM komentarze WHERE id = ?");
-    $stmt->bind_param("i", $commnent_id);
-    if ($stmt->execute()) {
-        header("Location: company_details.php?lp=" . urlencode($_POST['lp']));
+include_once 'class/DBManager.php';
+include_once 'class/komentarze.php';
+
+if(isset($_POST['comment_id'])) {
+    $comment_id = (int)$_POST['comment_id'];
+    $lp = (int)$_POST['lp'];
+    $komentarze = new Komentarze();
+    
+    if ($komentarze->delete($comment_id)) {
+        header("Location: company_details.php?lp=" . urlencode($lp));
         exit();
     } else {
         echo "Błąd podczas usuwania komentarza.";
-}
-    $stmt->close();
-    $conn->close();
+    }
 } else {
     echo "Nieprawidłowe żądanie.";
 }
+?>

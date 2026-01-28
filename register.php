@@ -1,42 +1,21 @@
 <?php
-include 'dbmanager.php';
+include_once 'class/DBManager.php';
+include_once 'class/users.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST['login'];
     $pass = $_POST['pass'];
     $email = $_POST['email'];
     $adminSts = $_POST['admin'] ?? 0;
+    $users = new Users();
 
-    $checkLoginStmt = $conn->prepare("SELECT * FROM users WHERE login = ?");
-    $checkLoginStmt->bind_param("s", $login);
-    $checkLoginStmt->execute();
-    $checkLoginStmt->store_result();
-
-    if ($checkLoginStmt->num_rows > 0) {
-        echo "Nazwa użytkownika już istnieje.";
+    $user = $users->create($login,$pass,$email,$adminSts);
+    if($user){
+        echo "pomyślnie stworzono użytkownika";
     } else {
-        $checkEmailStmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-        $checkEmailStmt->bind_param("s", $email);
-        $checkEmailStmt->execute();
-        $checkEmailStmt->store_result();
-
-        if ($checkEmailStmt->num_rows > 0) {
-            echo "Email już jest zarejestrowany.";
-            } else {
-            $stmt = $conn->prepare("INSERT INTO users (login, pass, email) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $login, $pass, $email);
-            if ($stmt->execute()) {
-                echo "Rejestracja zakończona sukcesem.<input type='button' value='Powrót' onclick=\"window.history.back()\">";
-            } else {
-                echo "Błąd podczas rejestracji.";
-        }
+        echo "coś poszło nie tak";
     }
-    
 }
-    $checkLoginStmt->close();
-    $checkEmailStmt->close();
-    $stmt->close();
-}
-    
 ?>
 <!DOCTYPE html>
 <html lang="pl">

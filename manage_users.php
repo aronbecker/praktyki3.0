@@ -21,20 +21,21 @@
 </div>
 <div class='companyList'>
 <?php
-include 'dbmanager.php';
-$searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-$sql = "SELECT id, login, email, admin FROM users";
+include_once 'class/DBManager.php';
+include_once 'class/users.php';
+
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+$usersObj = new Users();
+$usersList = $usersObj->getAll();
+
 if (!empty($searchQuery)) {
-    $sql .= " WHERE login LIKE ? OR email LIKE ?";
-    $stmt = $conn->prepare($sql);
-    $likeQuery = "%" . $searchQuery . "%";
-    $stmt->bind_param("ss", $likeQuery, $likeQuery);
-} else {
-    $stmt = $conn->prepare($sql);
+    $usersList = array_filter($usersList, function($user) use ($searchQuery) {
+        return stripos($user['login'], $searchQuery) !== false || 
+               stripos($user['email'], $searchQuery) !== false;
+    });
 }
-$stmt->execute();
-$result = $stmt->get_result();
-if ($result->num_rows > 0) {
+
+if (count($usersList) > 0) {
     echo "<table border='1' class='table'>
             <tr>
                 <th>ID</th>
@@ -44,7 +45,7 @@ if ($result->num_rows > 0) {
                 <th>Edytuj</th>
                 <th>Usuń</th>
             </tr>";
-    while ($row = $result->fetch_assoc()) {
+    foreach ($usersList as $row) {
         echo "<tr>";
         echo "<td>" . htmlspecialchars($row['id']) . "</td>";
         echo "<td>" . htmlspecialchars($row['login']) . "</td>";
@@ -59,8 +60,6 @@ if ($result->num_rows > 0) {
 } else {
     echo "Brak użytkowników do wyświetlenia.";
 }
-$stmt->close();
-$conn->close();
 ?>
 </div>
 </body>

@@ -1,16 +1,18 @@
 <?php
-include 'dbmanager.php';
+include_once 'class/DBManager.php';
+include_once 'class/firmy.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
-    $lp = $_GET['lp'];
-    $stmt = $conn->prepare("DELETE FROM firmy WHERE lp = ?");
-    $stmt->bind_param("i", $lp);
-    if ($stmt->execute()) {
+    $lp = (int)$_GET['lp'];
+    $firmy = new Firmy();
+    
+    if ($firmy->delete($lp)) {
         echo "Firma została usunięta pomyślnie.";
+        header("Location: admin.php");
+        exit();
     } else {
-        echo "Błąd: " . $stmt->error;
+        echo "Błąd podczas usuwania firmy.";
     }
-    $stmt->close();
-    $conn->close();
 } else {
     echo "Nieprawidłowe żądanie.";
 }

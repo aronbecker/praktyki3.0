@@ -1,11 +1,20 @@
 <?php
-    include 'dbmanager.php';
-    session_start();
-    if (!isset($_SESSION['login'])) {
-        header("Location: login.php");
-        exit();
-    }
+include_once 'class/DBManager.php';
+include_once 'class/firmy.php';
+include_once 'class/kategorie.php';
+include_once 'class/users.php';
 
+session_start();
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user = new Users();
+if (!$user->isAdmin($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -49,10 +58,10 @@
         <input type="text" id="nr_telefonu" name="nr_telefonu" ><br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" ><br>
-        <label for="adres_www">Adres WWW:</label><br>
-        <input type="text" id="adres_www" name="adres_www"><br>
-        <label for="kod_pocztowy">Kod Pocztowy:</label><br>
-        <input type="text" id="kod_pocztowy" name="kod_pocztowy" ><br>
+        <label for="adreswww">Adres WWW:</label><br>
+        <input type="text" id="adreswww" name="adreswww"><br>
+        <label for="kodpocztowy">Kod Pocztowy:</label><br>
+        <input type="text" id="kodpocztowy" name="kodpocztowy" ><br>
         <label for="powiat">Powiat:</label><br>
         <input type="text" id="powiat" name="powiat" ><br>
         <label for="gmina">Gmina:</label><br>
@@ -61,10 +70,10 @@
         <input type="text" id="miejscowosc" name="miejscowosc" ><br>
         <label for="ulica">Ulica:</label><br>
         <input type="text" id="ulica" name="ulica" ><br>
-        <label for="numer_budynku">Numer Budynku:</label><br>
-        <input type="text" id="numer_budynku" name="numer_budynku" ><br>
-        <label for="numer_lokalu">Numer Lokalu:</label><br>
-        <input type="text" id="numer_lokalu" name="numer_lokalu"><br><br>
+        <label for="nrbudynku">Numer Budynku:</label><br>
+        <input type="text" id="nrbudynku" name="nrbudynku" ><br>
+        <label for="nrlokalu">Numer Lokalu:</label><br>
+        <input type="text" id="nrlokalu" name="nrlokalu"><br><br>
         <input type="submit" value="Zatwierdź">
     </form>
     </div>
@@ -74,13 +83,11 @@
         <select name="kategoria" id="sel" style="margin-right: 10px;" onchange="filterCompanies()">
             <option value="">Wszystkie kategorie</option>
             <?php
-            $cat_stmt = $conn->prepare("SELECT id, nazwa FROM kategorie ORDER BY nazwa ASC");
-            $cat_stmt->execute();
-            $cat_result = $cat_stmt->get_result();
-            while ($cat_row = $cat_result->fetch_assoc()) {
-                echo "<option value='" . htmlspecialchars($cat_row['id']) . "' " . ">" . htmlspecialchars($cat_row['nazwa']) . "</option>";
+            $kategorieObj = new Kategorie();
+            $kategorieList = $kategorieObj->getAll();
+            foreach ($kategorieList as $kat) {
+                echo "<option value='" . htmlspecialchars($kat['id']) . "'>" . htmlspecialchars($kat['nazwa']) . "</option>";
             }
-            $cat_stmt->close();
             ?>
         </select>
         <br><br>
@@ -90,43 +97,32 @@
     <div class="div" id="companyList" style="width: 96%; float: right;height: auto;overflow-x: scroll; overflow-y: scroll; max-height: 600px; margin-right: 10px;">
     <h2>Lista Firm</h2>
     <?php
-        $sql = "SELECT DISTINCT f.lp, COALESCE(k.nazwa, 'Brak kategorii') AS kategoria, f.nip, f.regon, f.nazwapodmiotu, f.nazwisko, f.imie, f.telefon, f.email, f.adreswww, f.kodpocztowy, f.powiat, f.gmina, f.miejscowosc, f.ulica, f.nrbudynku, f.nrlokalu 
-                FROM firmy f 
-                LEFT JOIN firma_kategoria fk ON f.lp = fk.firma_lp 
-                LEFT JOIN kategorie k ON fk.kategoria_id = k.id 
-                ORDER BY f.lp ASC";
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $firmy = new Firmy();
+        $firmesList = $firmy->getAllWithCategories();
         echo "<table border='1' class='table'>";
-        echo "<tr><th>LP</th><th>Kategoria</th><th>NIP</th><th>REGON</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th><th>Edytuj</th><th>Usuń</th></tr>";
-        while ($row = $result->fetch_assoc()) {
+        echo "<tr><th>LP</th><th>Kategoria</th><th>Nazwa</th><th>Nazwisko</th><th>Imię</th><th>Telefon</th><th>Email</th><th>Adres WWW</th><th>Kod Pocztowy</th><th>Powiat</th><th>Gmina</th><th>Miejscowość</th><th>Ulica</th><th>Numer Budynku</th><th>Numer Lokalu</th><th>Edytuj</th><th>Usuń</th></tr>";
+        foreach ($firmesList as $row) {
             echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['lp']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Lp']) . "</td>";
             echo "<td>" . htmlspecialchars($row['kategoria']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['regon']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nazwapodmiotu']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nazwisko']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['imie']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['telefon']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['adreswww']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['kodpocztowy']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['powiat']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['gmina']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['miejscowosc']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['ulica']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nrbudynku']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['nrlokalu']) . "</td>";
-            echo "<td><input type='button' value='Edytuj' class='edit' onclick=\"window.location.href='edit_company.php?lp=" . urlencode($row['lp']) . "'\"></td>";
-            echo "<td><input type='button' value='Usuń' class='delete' onclick=\"window.location.href='delete_company.php?lp=" . urlencode($row['lp']) . "'\"></td>";
+            echo "<td>" . htmlspecialchars($row['NazwaPodmiotu']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Nazwisko']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Imie']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Telefon']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Email']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['AdresWWW']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['KodPocztowy']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Powiat']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Gmina']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Miejscowosc']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['Ulica']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['NrBudynku']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['NrLokalu']) . "</td>";
+            echo "<td><input type='button' value='Edytuj' class='edit' onclick=\"window.location.href='edit_company.php?lp=" . urlencode($row['Lp']) . "'\"></td>";
+            echo "<td><input type='button' value='Usuń' class='delete' onclick=\"window.location.href='delete_company.php?lp=" . urlencode($row['Lp']) . "'\"></td>";
             echo "</tr>";
         }
         echo "</table>";
-        $stmt->close();
-        $conn->close();
     ?>
     </div>
     <script>
@@ -139,9 +135,9 @@
                 if (index === 0) return; // Skip header row
                 let cells = row.getElementsByTagName('td');
                 let kategoria = cells[1].textContent.toLowerCase();
-                let nazwa = cells[4].textContent.toLowerCase();
-                let nazwisko = cells[5].textContent.toLowerCase();
-                let imie = cells[6].textContent.toLowerCase();
+                let nazwa = cells[2].textContent.toLowerCase();
+                let nazwisko = cells[3].textContent.toLowerCase();
+                let imie = cells[4].textContent.toLowerCase();
                 let matchesSearch = nazwa.includes(searchInput) || nazwisko.includes(searchInput) || imie.includes(searchInput);
 
                 let matchesCategory = true;

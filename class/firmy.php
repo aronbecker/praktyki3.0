@@ -1,6 +1,6 @@
 <?php
 
-include_once 'class/db_manager.php';
+include_once 'class/DBManager.php';
 include_once 'class/komentarze.php';
 
 class Firmy
@@ -52,7 +52,19 @@ class Firmy
 
     public function getAll(): array
     {
-        $sql = "SELECT * FROM {$this->table} ORDER BY NazwaPodmiotu";
+        $sql = "SELECT * FROM {$this->table} ORDER BY Lp";
+        return $this->db->query($sql)->fetchAll();
+    }
+
+    public function getAllWithCategories(): array
+    {
+        $sql = "
+            SELECT f.*, COALESCE(k.nazwa, 'Brak kategorii') AS kategoria
+            FROM {$this->table} f
+            LEFT JOIN firma_kategoria fk ON f.lp = fk.firma_lp
+            LEFT JOIN kategorie k ON fk.kategoria_id = k.id
+            ORDER BY f.NazwaPodmiotu
+        ";
         return $this->db->query($sql)->fetchAll();
     }
 

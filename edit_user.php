@@ -1,21 +1,12 @@
 <?php
-include 'dbmanager.php';
-include 'class/users.php';
+include_once 'class/DBManager.php';
+include_once 'class/users.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
-    // $id = $_GET['id'];
-    // $stmt = $conn->prepare("SELECT login, pass, email, admin FROM users WHERE id = ?");
-    // $stmt->bind_param("i", $id);
-    // $stmt->execute();
-    // $stmt->bind_result($login, $pass, $email, $adminSts);
-    // if ($stmt->fetch()) {
-    // } else {
-    //     echo "Nie znaleziono użytkownika o podanym identyfikatorze.";
-    //     exit();
-    // }
-    // $stmt->close();
     $user = new Users();
-    $userData = $user->getById($_GET['id']);
-    $id = $_GET['id'];
+    $userData = $user->getById((int)$_GET['id']);
+    $id = (int)$_GET['id'];
+    
     if ($userData) {
         $login = $userData['login'];
         $pass = $userData['pass'];
@@ -25,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
         echo "Nie znaleziono użytkownika o podanym identyfikatorze.";
         exit();
     }
-
 } else {
     echo "Nieprawidłowe żądanie.";
-    exit();;
+    exit();
 }
+?>
         ?>
         <!DOCTYPE html>
         <html lang="pl">

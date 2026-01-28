@@ -1,6 +1,7 @@
 <?php
-include 'dbmanager.php';
-include 'class/firmy.php';
+include_once 'class/DBManager.php';
+include_once 'class/firmy.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nip = $_POST['NIP'] ?? null;
     $regon = $_POST['REGON'] ?? null;

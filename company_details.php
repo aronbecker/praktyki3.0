@@ -1,5 +1,8 @@
 <?php
 session_start();
+include_once 'class/DBManager.php';
+include_once 'class/firmy.php';
+include_once 'class/komentarze.php';
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -22,35 +25,31 @@ session_start();
 <input type="button" value="Powrót do strony głównej" onclick="window.location.href='index.php'" style="margin-bottom: 20px;">
 <div style="margin-bottom: 30px;">
     <?php
-include 'dbmanager.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
-    $lp = $_GET['lp'];
-    $stmt = $conn->prepare("SELECT lp, NIP, REGON, nazwapodmiotu, imie, nazwisko, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy WHERE lp = ?");
-    $stmt->bind_param("i", $lp);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        echo "<p><strong>LP:</strong> " . htmlspecialchars($row['lp']) . "</p>";
-        echo "<p><strong>NIP:</strong> " . htmlspecialchars($row['NIP']) . "</p>";
-        echo "<p><strong>REGON:</strong> " . htmlspecialchars($row['REGON']) . "</p>";
-        echo "<p><strong>Nazwa:</strong> " . htmlspecialchars($row['nazwapodmiotu']) . "</p>";
-        echo "<p><strong>Imię:</strong> " . htmlspecialchars($row['imie']) . "</p>";
-        echo "<p><strong>Nazwisko:</strong> " . htmlspecialchars($row['nazwisko']) . "</p>";
-        echo "<p><strong>Telefon:</strong> " . htmlspecialchars($row['telefon']) . "</p>";
-        echo "<p><strong>Email:</strong> " . htmlspecialchars($row['email']) . "</p>";
-        echo "<p><strong>Adres WWW:</strong> " . htmlspecialchars($row['adreswww']) . "</p>";
-        echo "<p><strong>Kod Pocztowy:</strong> " . htmlspecialchars($row['kodpocztowy']) . "</p>";
-        echo "<p><strong>Powiat:</strong> " . htmlspecialchars($row['powiat']) . "</p>";
-        echo "<p><strong>Gmina:</strong> " . htmlspecialchars($row['gmina']) . "</p>";
-        echo "<p><strong>Miejscowość:</strong> " . htmlspecialchars($row['miejscowosc']) . "</p>";
-        echo "<p><strong>Ulica:</strong> " . htmlspecialchars($row['ulica']) . "</p>";
-        echo "<p><strong>Numer Budynku:</strong> " . htmlspecialchars($row['nrbudynku']) . "</p>";
-        echo "<p><strong>Numer Lokalu:</strong> " . htmlspecialchars($row['nrlokalu']) . "</p>";
+    $lp = (int)$_GET['lp'];
+    $firmy = new Firmy();
+    $firma = $firmy->getById($lp);
+    
+    if ($firma) {
+        echo "<p><strong>LP:</strong> " . htmlspecialchars($firma['Lp']) . "</p>";
+        echo "<p><strong>NIP:</strong> " . htmlspecialchars($firma['Nip']) . "</p>";
+        echo "<p><strong>REGON:</strong> " . htmlspecialchars($firma['Regon']) . "</p>";
+        echo "<p><strong>Nazwa:</strong> " . htmlspecialchars($firma['NazwaPodmiotu']) . "</p>";
+        echo "<p><strong>Imię:</strong> " . htmlspecialchars($firma['Imie']) . "</p>";
+        echo "<p><strong>Nazwisko:</strong> " . htmlspecialchars($firma['Nazwisko']) . "</p>";
+        echo "<p><strong>Telefon:</strong> " . htmlspecialchars($firma['Telefon']) . "</p>";
+        echo "<p><strong>Email:</strong> " . htmlspecialchars($firma['Email']) . "</p>";
+        echo "<p><strong>Adres WWW:</strong> " . htmlspecialchars($firma['AdresWWW']) . "</p>";
+        echo "<p><strong>Kod Pocztowy:</strong> " . htmlspecialchars($firma['KodPocztowy']) . "</p>";
+        echo "<p><strong>Powiat:</strong> " . htmlspecialchars($firma['Powiat']) . "</p>";
+        echo "<p><strong>Gmina:</strong> " . htmlspecialchars($firma['Gmina']) . "</p>";
+        echo "<p><strong>Miejscowość:</strong> " . htmlspecialchars($firma['Miejscowosc']) . "</p>";
+        echo "<p><strong>Ulica:</strong> " . htmlspecialchars($firma['Ulica']) . "</p>";
+        echo "<p><strong>Numer Budynku:</strong> " . htmlspecialchars($firma['NrBudynku']) . "</p>";
+        echo "<p><strong>Numer Lokalu:</strong> " . htmlspecialchars($firma['NrLokalu']) . "</p>";
     } else {
         echo "Nie znaleziono firmy o podanym LP.";
     }
-    $stmt->close();
-    $conn->close();
 } else {
     echo "Nieprawidłowe żądanie.";
 }
@@ -66,16 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
         <input type="submit" value="Dodaj Komentarz" style="display: inline;">
     </form>
     <?php
-    include 'dbmanager.php';
     if (isset($_GET['lp'])) {
-        $lp = $_GET['lp'];
-
-        $stmt = $conn->prepare("SELECT id, tresc, autor, data_utworzenia, data_mod, user_id, ocena FROM komentarze WHERE firma_lp = ? ORDER BY data_utworzenia DESC");
-        $stmt->bind_param("i", $lp);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
+        $lp = (int)$_GET['lp'];
+        $komentarze = new Komentarze();
+        $komentarzeLista = $komentarze->getByFirma($lp);
+        
+        if (count($komentarzeLista) > 0) {
+            foreach ($komentarzeLista as $row) {
                 echo "<div class='comment'>";
                 echo "<p><em>Autor: " . htmlspecialchars($row['autor']) . "&nbsp;&nbsp;&nbsp;&nbsp;Data utworzenia: " . htmlspecialchars($row['data_utworzenia']) . "</em></p>";
                 if (!is_null($row['data_mod'])) {
@@ -123,8 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
         } else {
             echo "<p>Brak komentarzy dla tej firmy.</p>";
         }
-        $stmt->close();
-        $conn->close();
     } else {
         echo "Nieprawidłowe żądanie.";
     }

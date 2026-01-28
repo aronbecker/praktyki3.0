@@ -1,103 +1,74 @@
 <?php
-include 'dbmanager.php';
+include_once 'class/DBManager.php';
+include_once 'class/firmy.php';
+include_once 'class/kategorie.php';
+
 if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
-    $lp = $_GET['lp'];
-    $stmt = $conn->prepare("SELECT nip, regon, nazwapodmiotu, nazwisko, imie, telefon, email, adreswww, kodpocztowy, powiat, gmina, miejscowosc, ulica, nrbudynku, nrlokalu FROM firmy WHERE lp = ?");
-    $stmt->bind_param("i", $lp);
-    $stmt->execute();
-    $stmt->bind_result($nip, $regon, $nazwapodmiotu, $nazwisko, $imie, $telefon, $email, $adreswww, $kodpocztowy, $powiat, $gmina, $miejscowosc, $ulica, $nrbudynku, $nrlokalu);
-    if ($stmt->fetch()) {
-        // Dane firmy zostały pobrane pomyślnie
+    $lp = (int)$_GET['lp'];
+    $firmy = new Firmy();
+    $firma = $firmy->getById($lp);
+    
+    if ($firma) {
+        $nip = $firma['Nip'];
+        $regon = $firma['Regon'];
+        $nazwapodmiotu = $firma['NazwaPodmiotu'];
+        $nazwisko = $firma['Nazwisko'];
+        $imie = $firma['Imie'];
+        $telefon = $firma['Telefon'];
+        $email = $firma['Email'];
+        $adreswww = $firma['AdresWWW'];
+        $kodpocztowy = $firma['KodPocztowy'];
+        $powiat = $firma['Powiat'];
+        $gmina = $firma['Gmina'];
+        $miejscowosc = $firma['Miejscowosc'];
+        $ulica = $firma['Ulica'];
+        $nrbudynku = $firma['NrBudynku'];
+        $nrlokalu = $firma['NrLokalu'];
     } else {
         echo "Nie znaleziono firmy o podanym identyfikatorze.";
-        exit();;
-    }
-    $stmt->close();
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $lp = $_POST['lp'];
-    $nip = $_POST['NIP'];
-    $regon = $_POST['REGON'];
-    $nazwapodmiotu = $_POST['nazwa'];
-    $nazwisko = $_POST['nazwisko'];
-    $imie = $_POST['imie'];
-    $telefon = $_POST['nr_telefonu'];
-    $email = $_POST['email'];
-    $adreswww = $_POST['adreswww'];
-    $kodpocztowy = $_POST['kodpocztowy'];
-    $powiat = $_POST['powiat'];
-    $gmina = $_POST['gmina'];
-    $miejscowosc = $_POST['miejscowosc'];
-    $ulica = $_POST['ulica'];
-    $nrbudynku = $_POST['nrbudynku'];
-    $nrlokalu = $_POST['nrlokalu'];
-    $stmt = $conn->prepare("UPDATE firmy SET nip = ?, regon = ?, nazwapodmiotu = ?, nazwisko = ?, imie = ?, telefon = ?, email = ?, adreswww = ?, kodpocztowy = ?, powiat = ?, gmina = ?, miejscowosc = ?, ulica = ?, nrbudynku = ?, nrlokalu = ? WHERE lp = ?");
-    $stmt->bind_param("sssssssssssssssi", $nip, $regon, $nazwapodmiotu, $nazwisko, $imie, $telefon, $email, $adreswww, $kodpocztowy, $powiat, $gmina, $miejscowosc, $ulica, $nrbudynku, $nrlokalu, $lp);
-    if ($stmt->execute()) {
-        echo "Dane firmy zostały zaktualizowane pomyślnie.";
-        header("Location: admin.php");
         exit();
-    } else {
-        echo "Błąd: " . $stmt->error;
     }
-    $stmt->close();
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $lp = (int)$_POST['lp'];
+    $firmy = new Firmy();
+    
+    $data = [
+        'Nip' => $_POST['NIP'],
+        'Regon' => $_POST['REGON'],
+        'NazwaPodmiotu' => $_POST['nazwapodmiotu'],
+        'Nazwisko' => $_POST['nazwisko'],
+        'Imie' => $_POST['imie'],
+        'Telefon' => $_POST['nr_telefonu'],
+        'Email' => $_POST['email'],
+        'AdresWWW' => $_POST['adreswww'],
+        'KodPocztowy' => $_POST['kodpocztowy'],
+        'Powiat' => $_POST['powiat'],
+        'Gmina' => $_POST['gmina'],
+        'Miejscowosc' => $_POST['miejscowosc'],
+        'Ulica' => $_POST['ulica'],
+        'NrBudynku' => $_POST['nrbudynku'],
+        'NrLokalu' => $_POST['nrlokalu']
+    ];
+    
+    $firmy->update($lp, $data);
+    echo "Dane firmy zostały zaktualizowane pomyślnie.";
+    header("Location: admin.php");
+    exit();
 } else {
     echo "Nieprawidłowe żądanie.";
-    exit();;
+    exit();
 }
-        ?>
+?>
         <!DOCTYPE html>
         <html lang="pl">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Edytuj Firmę</title>
+            <link rel="stylesheet"href="style/style2.css">
             <style>
-                body{
-                    background-color: lightgrey;
-                    font-family: Arial, Helvetica, sans-serif;
-                }
-                h1,h2{
-                    text-align: center;
-                }
-                input{ 
-                    margin-left: auto;
-                    margin-right: auto;
-                    display: block;
-                    margin-top: 10px;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    background-color: white;
-                    color: black;
-                    border: 2px solid black;
-                    border-radius: 5px;
-                }
-                input[type="button"], input[type="submit"]{
-                    margin-left: auto;
-                    margin-right: auto;
-                    margin-top: 10px;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    background-color: white;
-                    color: black;
-                    border: 2px solid black;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                label{
-                    display: block;
-                    text-align: center;
-                    margin-top: 10px;
-                }
-                .hidden{
-                    display: none;
-                }
-                select, option{
-                    width: 80%;
-                    height: 30px;
-                    margin-top: 10px;
-                    margin-bottom: 10px;
-                }
                 .dimmer {
+                    margin-top:auto;
                         background: #000;
                         opacity: 0.5;
                         position: fixed;
@@ -107,20 +78,22 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                         height: 100%;
                         z-index: 0;
                     }
+                .hidden{
+                    display: none;
+                }
             </style>
         </head>
         <body>
             
             <h1>Edytuj Firmę</h1>
             <div style="
-            width: 52%;
+            width: 60%;
             padding: 10px;
             margin-left: auto;
             margin-right: auto;
             display: block;
             height: auto;
-            border: 2px solid black;
-            box-shadow: 10px 10px 5px grey;">
+            border: 2px solid black;>
             <form method="POST" action="edit_firmy.php">
                 <div style="float: left; margin-right: 20px;">
                 <input type="hidden" name="lp" value="<?php echo htmlspecialchars($lp); ?>">
@@ -170,11 +143,10 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['lp'])) {
                         <input type="hidden" name="lp" value="<?php echo htmlspecialchars($lp); ?>">
                         <select name="kategoria" id="sel">
                         <?php
-                        $result = $conn->query("SELECT nazwa FROM kategorie");
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='" . htmlspecialchars($row['nazwa']) . "'>" . htmlspecialchars($row['nazwa']) . "</option>";
-                            }
+                        $kategorieObj = new Kategorie();
+                        $kategorieList = $kategorieObj->getAll();
+                        foreach ($kategorieList as $kat) {
+                            echo "<option value='" . htmlspecialchars($kat['nazwa']) . "'>" . htmlspecialchars($kat['nazwa']) . "</option>";
                         }
                         ?>
                         </select>
