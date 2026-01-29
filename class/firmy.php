@@ -74,6 +74,13 @@ class Firmy
         $stmt = $this->db->query($sql, ['nip' => $nip]);
         return $stmt->fetch() ?: null;
     }
+    public function getLpByNip(string $nip): string
+    {
+        $sql = "SELECT Lp FROM {$this->table} WHERE Nip = :nip";
+        $stmt = $this->db->query($sql, ['nip' => $nip]);
+        $out = $stmt->fetch() ?: null;
+        return implode('', $out);
+    }
 
     /* =======================
        UPDATE

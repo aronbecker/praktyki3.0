@@ -1,5 +1,6 @@
 <?php
 include_once 'class/DBManager.php';
+include_once 'class/firmy.php';
 
 class Kategorie
 {
@@ -59,6 +60,19 @@ class Kategorie
         $stmt = $this->db->query($sql, ['nazwa' => $nazwa]);
         return $stmt->fetch() ?: null;
     }
+    public function getByPKD(mixed $pkd): mixed
+    {
+        $sql = "SELECT nazwa FROM pkd_kategorie WHERE pkd REGEXP :pkd";
+        $stmt = $this->db->query($sql, ['pkd' => $pkd]);
+        $name = $stmt->fetch() ?: null;
+        if ((gettype($name)) == 'string'){
+            return $name;
+        } else if ((gettype($name)) == 'array') {
+            return implode('', $name);
+        }else{
+            return 'string haha';
+        }
+    }
 
     /* =======================
        UPDATE
@@ -114,5 +128,11 @@ class Kategorie
             throw new InvalidArgumentException("Kategoria '$categoryName' nie istnieje");
         }
         return $this->assignToCompany($category['id'], $companyLp);
+    }
+    public function assignToCompanyByPKD(string $nip, string $pkd) {
+        $categoryID = $this->getByPKD($pkd);
+        $firma = new Firmy();
+        $firmaLp = $firma->getLpByNip($nip);
+        return $this->assignToCompanyByName($categoryID, $firmaLp);
     }
 }
